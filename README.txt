@@ -46,3 +46,6 @@ https://github.com/arttupii/CLSMB/tree/master/photos
 
 Schematic&Gerber files:
 https://github.com/arttupii/CLSMB/tree/master/eagleFiles
+
+Library:
+https://github.com/arttupii/ArduinoHelperLibrary

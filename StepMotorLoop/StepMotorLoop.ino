@@ -1,4 +1,3 @@
-
 #include <avr/interrupt.h>
 #include <Micros.h>
 #include <Millis.h>
@@ -136,33 +135,48 @@ ISR(PCINT2_vect)
   }
 }
 
-bool blinkLed() {
+bool stateMachineLed() {
   static Micros t;
   static int state = 0;
 
-  if (motorJamming) {
-    digitalWrite(LED, HIGH);
-    return;
+  if (errorHappened && state<10) {
+    state = 10;
   }
-
-  if (!errorHappened) {
-    return;
+  if (motorJamming) {
+    state = 20;
   }
 
   switch (state) {
     case 0:
-      digitalWrite(LED, HIGH);
-      t.setTime(100);
-      state = 1;
+      digitalWrite(LED, LOW);
+      state++;
       break;
     case 1:
+      break;
+    case 10:
+      digitalWrite(LED, HIGH);
+      t.setTime(100);
+      state++;
+      break;
+    case 11:
       if (t.check()) {
         digitalWrite(LED, LOW);
         t.setTime(500);
-        state = 2;
+        state++;
       }
-    case 2:
+    case 12:
       if (t.check()) {
+        state = 0;
+      }
+      break;
+    case 20:
+        digitalWrite(LED, HIGH);
+        t.setTime(1000);
+        state++;
+        break;
+    case 21:
+      if (t.check()) {
+        digitalWrite(LED, LOW);
         state = 0;
       }
       break;
@@ -234,5 +248,5 @@ void printDebugInfo() {
 
 void loop() {
   stateMachine();
-  blinkLed();
+  stateMachineLed();
 }

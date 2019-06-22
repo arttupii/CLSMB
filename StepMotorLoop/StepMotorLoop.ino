@@ -23,8 +23,7 @@ void setup() {
 
   pinMode(LED, OUTPUT);
 
-  pinMode(IN_STEP0, INPUT);
-  pinMode(IN_STEP1, INPUT); 
+  pinMode(IN_STEP, INPUT);
   pinMode(IN_DIR, INPUT);
   pinMode(IN_EN, INPUT);
 
@@ -59,7 +58,7 @@ void setup() {
   delay(1);
 
   attachInterrupt(digitalPinToInterrupt(AS5040_A_DIR_U), interrupt_AS5040_A_DIR_U, RISING );
-  attachInterrupt(digitalPinToInterrupt(IN_STEP0), interrupt_input_IN_STEP, CHANGE );
+  attachInterrupt(digitalPinToInterrupt(IN_STEP), interrupt_input_IN_STEP, CHANGE );
 
 #ifdef PROGRAM_AS5040
   //512 pulses per revolution
@@ -135,7 +134,7 @@ bool errorHappened = false;
 
 int errSteps;
 void interrupt_input_IN_STEP() {
-  int stepIn = digitalRead(IN_STEP0);
+  int stepIn = digitalRead(IN_STEP);
   int dirIn= digitalRead(IN_DIR);
   if(stepIn) {
     if (dirIn) {

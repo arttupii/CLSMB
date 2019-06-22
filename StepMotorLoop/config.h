@@ -18,8 +18,7 @@
 #define AS5040_A_DIR_U 2 //LSB
 
 
-#define IN_STEP0 3
-#define IN_STEP1 4
+#define IN_STEP 3
 #define IN_DIR 5
 #define IN_EN 6
 

@@ -17,6 +17,8 @@
   #define IN_STEP 3  //Connected to INT0 
   #define IN_DIR 6   
   #define IN_EN 7
+  #define LED 7
+  #define ENCODER_PPR 1600 //Pulses per Revolution
 #else
   #define STEP_DIR_MODE
   //#define PROGRAM_AS5040
@@ -37,20 +39,13 @@
   #define IN_STEP 3
   #define IN_DIR 5
   #define IN_EN 6
+  #define LED 8
+  #define ENCODER_PPR 512 //Pulses per Revolution
 #endif
-
-
-
-#define LED 7
-
 
 #define STEP_0_PULSE_US 50
 #define STEP_1_PULSE_US 50
 
-
-
-#define ENCODER_PPR 512 //Pulses per Revolution
 #define MOTOR_PPR (400*16) //Pulses per Revolution
-
 
 #endif

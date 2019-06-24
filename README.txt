@@ -75,9 +75,9 @@ You can use AS5040 or standard rotary encoder (HN3806-AB-400N)
                    +---------------+                ||||
                    |               |                ||||
                    |  Standard    A|-----red--------+|||
-                                  _|                 ||| 
+                   |              _|                 ||| 
                    |  Stepmotor   A|-----blue--------+||
-                                   |                  ||  
+                   |               |                  ||  
                    |  controller  B|-----green--------+|
                    |              _|                   |
                    |  e.g. TB6600 B|-----black---------+

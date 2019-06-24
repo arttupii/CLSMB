@@ -1,7 +1,5 @@
 Closed loop step motor controller
 
-This project has been discontinued!!!
-
 Link to test video:
 https://www.youtube.com/watch?v=YhEo3L9fRq0
 

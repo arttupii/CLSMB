@@ -73,6 +73,7 @@ You can use AS5040 or standard rotary encoder (HN3806-AB-400N)
                       |   |   |                     ||||
                       V   V   V                     ||||                                              
                    +---------------+                ||||
+                   | EN  DIR  STEP |                ||||
                    |               |                ||||
                    |  Standard    A|-----red--------+|||
                    |              _|                 ||| 

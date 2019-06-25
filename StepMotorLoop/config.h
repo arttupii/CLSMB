@@ -7,12 +7,9 @@
   #define ENCODER_A_PIN 4 //PCINT20 pin change interrupt. If you change this --> update PCICR&PCMSK2 registers
   #define ENCODER_B_PIN 5 //PCINT21 pin change interrupt. 
 
-  #define MOTOR_EN A3
-  #define MOTOR_MS1 A0
-  #define MOTOR_MS2 A1
-  #define MOTOR_MS3 A2
-  #define MOTOR_STEP 13
-  #define MOTOR_DIR 12
+  #define MOTOR_EN 9
+  #define MOTOR_STEP 10
+  #define MOTOR_DIR 11
   
   #define IN_STEP 3  //Connected to INT0 
   #define IN_DIR 6   

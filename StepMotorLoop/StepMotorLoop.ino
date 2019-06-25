@@ -17,9 +17,6 @@ void setup() {
   pinMode(MOTOR_EN, OUTPUT);
   pinMode(MOTOR_STEP, OUTPUT);
   pinMode(MOTOR_DIR, OUTPUT);
-  pinMode(MOTOR_MS1, OUTPUT);
-  pinMode(MOTOR_MS2, OUTPUT);
-  pinMode(MOTOR_MS2, OUTPUT);
 
   pinMode(LED, OUTPUT);
 
@@ -27,12 +24,18 @@ void setup() {
   pinMode(IN_DIR, INPUT);
   pinMode(IN_EN, INPUT);
 
-  //Resolution 16 step
-  digitalWrite(MOTOR_MS1, HIGH);
-  digitalWrite(MOTOR_MS2, HIGH);
-  digitalWrite(MOTOR_MS3, HIGH);
+
 
 #ifdef STEP_DIR_MODE
+    pinMode(MOTOR_MS1, OUTPUT);
+    pinMode(MOTOR_MS2, OUTPUT);
+    pinMode(MOTOR_MS2, OUTPUT);
+    
+    //Resolution 16 step    
+    digitalWrite(MOTOR_MS1, HIGH);
+    digitalWrite(MOTOR_MS2, HIGH);
+    digitalWrite(MOTOR_MS3, HIGH);
+    
     digitalWrite(AS5040_D0, HIGH);
     digitalWrite(AS5040_PROG, LOW);
     digitalWrite(AS5040_B_DIR_V, HIGH);

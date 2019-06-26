@@ -8,7 +8,7 @@
 #define READ_EN_PIN (PINB & 0b00000100)
 
 #define HOLD_ON_REQ DDRD|=0b10000000 //HOLD_ON is LOW. Use D7 pin like open collector output
-#define CANCEL_HOLD_ON_REQ DDRD&=0b01111111 //HOLD_ON is LOW
+#define CANCEL_HOLD_ON_REQ DDRD&=0b01111111 //HOLD_ON is OPEN
 
 
 void runMotor() {

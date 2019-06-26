@@ -12,10 +12,10 @@ void runMotor() {
   static int state = 0;
   static int dir;
 
-  if(READ_EN_PIN) {
+  if (READ_EN_PIN) {
     return;
   }
-  
+
   switch (state) {
     case 0: { //Check errors
         dir = checkErrorDirection();
@@ -30,13 +30,13 @@ void runMotor() {
       }
     case 1: {
         SET_MOTOR_STEP_LOW;
-        if (dir==1) {
+        if (dir == 1) {
           SET_MOTOR_DIR_HIGH;
         } else {
           SET_MOTOR_DIR_LOW;
         }
         t.setTime(STEP_1_PULSE_US);
-        
+
         SET_MOTOR_STEP_HIGH;
         state++;
       }

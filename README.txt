@@ -47,7 +47,7 @@ Hox!
         steps loss --> FEED HOLD is LOW.
         normally ---> FEED HOLD is open
 
-Library:
+You need this library (Micros.h&Millis.h):
 https://github.com/arttupii/ArduinoHelperLibrary
 
 Useful links:

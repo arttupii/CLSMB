@@ -15,7 +15,7 @@ void setup() {
   DDRB =  0b00100000;
   PORTB = 0b00000111;
 
-  //Set input pins (A, B).
+  //Set input pins (A, B) and HOLD_ON (as open state).
   DDRD =  0b00000000;
   PORTD = 0b00110000;
 
@@ -46,34 +46,37 @@ bool errorHappened = false;
 
 int errSteps;
 
+volatile u8 lastStepInState=0;
+
 //Handle EN_PIN & STEP_IN change interrupt
 ISR (PCINT0_vect)
 {
-  u8 pinb = PINB;
-  u8 stepIn = pinb & 0b00000001; //much faster than digitalRead()
-  u8 dirIn =  pinb & 0b00000010;
-  u8 enIn =   pinb & 0b00000100;
+  volatile u8 pinb = PINB;
+  volatile u8 stepIn = pinb & 0b00000001; //much faster than digitalRead()
+  volatile u8 dirIn =  pinb & 0b00000010;
+  volatile u8 enIn =   pinb & 0b00000100;
 
   if (!motorJamming || enIn ) {
     PORTC = pinb; //Forward StepIn,DirIn,EnIn to stepmotor controller
   }
 
-  if (stepIn && !enIn) { //Rising edge
+  if (stepIn && lastStepInState==0 && !enIn) { //Rising edge, EN === enabled
     if (dirIn) {
       in_stepCounter++;
     } else {
       in_stepCounter--;
     }
-  }
+  } 
+  lastStepInState = stepIn;
 }
 
 //Handle quadrature signals
 ISR (PCINT2_vect)
 {
   //Copied from https://reprap.org/wiki/Magnetic_Rotary_Encoder_v1.0
-  u8 pind = PIND;
-  u8 in_a = pind & 0b00010000;
-  u8 in_b = pind & 0b00100000;
+  volatile u8 pind = PIND;
+  volatile u8 in_a = pind & 0b00010000;
+  volatile u8 in_b = pind & 0b00100000;
 
   // found a low-to-high on channel A
   if (in_a)

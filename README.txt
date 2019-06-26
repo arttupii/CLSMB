@@ -12,14 +12,14 @@ Use standard rotary encoder (HN3806-AB-400N or similar)
                    |               |    |         |        |
       stepIn------>|D8             |    |         |        |
                    |   Arduino     |    |         |        |
-      dirIn------->|D9  Pro Mini   |    |  A   B  |        |
+      dirIn------->|D9 Pro Mini    |    |  A   B  |        |
                    |   or nano     |    +---------+--------+
       EnIn-------->|D10            |       |   |     ^^^^    
                    |               |IN_A   |   |     ||||
       LED---------<|D13          D4|<------+   |     ||||
                    |               |           |     ||||
-                   |               |IN_B       |     ||||
-                   |             D5|<----------+     ||||
+   _________       |               |IN_B       |     ||||
+   FEED HOLD------<|D7           D5|<----------+     ||||
                    |               |                 ||||
                    |  A2  A1  A0   |                 ||||
                    +---------------+                 ||||
@@ -42,7 +42,10 @@ Use standard rotary encoder (HN3806-AB-400N or similar)
 
 Hox!
  - Because of speed optimizations you cannot change pinout without code changes. 
- - This has not been tested yet. (My encoder is still somewhere between China and Finland.)
+ - This has not been tested yet. (My encoder is still somewhere between China and my home.)
+ - FEED HOLD is open collector output. With this pin you can ask "feed hold" from CNC machine controller
+        steps loss --> FEED HOLD is LOW.
+        normally ---> FEED HOLD is open
 
 Library:
 https://github.com/arttupii/ArduinoHelperLibrary

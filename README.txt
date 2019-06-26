@@ -49,3 +49,6 @@ Hox!
 
 Library:
 https://github.com/arttupii/ArduinoHelperLibrary
+
+Useful links:
+https://www.banggood.com/NANO-IO-Shield-Expansion-Board-Nano-V3-Improved-Version-No-Cable-For-Arduino-p-1010994.html?rmmds=search&cur_warehouse=CN

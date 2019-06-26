@@ -12,8 +12,8 @@ Use standard rotary encoder (HN3806-AB-400N or similar)
                    |               |    |         |        |
       stepIn------>|D8             |    |         |        |
                    |   Arduino     |    |         |        |
-      dirIn------->|D9 Pro Mini    |    |  A   B  |        |
-                   |   or nano     |    +---------+--------+
+      dirIn------->|D9 Nano        |    |  A   B  |        |
+                   |               |    +---------+--------+
       EnIn-------->|D10            |       |   |     ^^^^    
                    |               |IN_A   |   |     ||||
       LED---------<|D13          D4|<------+   |     ||||

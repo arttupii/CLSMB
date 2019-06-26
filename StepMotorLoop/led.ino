@@ -1,9 +1,13 @@
+#define SET_LED_HIGH PORTD|=0b00100000
+#define SET_LED_LOW PORTD&=0b11011111
+
+
 void runLed() {
   static Millis t;
   static int state = 0;
 
   if (motorJamming) {
-    digitalWrite(LED, HIGH);
+    SET_LED_HIGH;
     return;
   }
 
@@ -13,16 +17,17 @@ void runLed() {
 
   switch (state) {
     case 0:
-      digitalWrite(LED, HIGH);
+      SET_LED_HIGH;
       t.setTime(100);
       state = 1;
       break;
     case 1:
       if (t.check()) {
-        digitalWrite(LED, LOW);
+        SET_LED_LOW;
         t.setTime(500);
         state = 2;
       }
+      break;
     case 2:
       if (t.check()) {
         state = 0;

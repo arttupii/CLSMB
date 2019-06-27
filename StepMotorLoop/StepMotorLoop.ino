@@ -129,7 +129,7 @@ int calculateError() {
 
   int ret = (a) - ((ENCODER_PPR ) * i) / MOTOR_PPR;
 
-  #if ENABLE_PRINTS>99
+  #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
     int converted = ((ENCODER_PPR ) * i) / MOTOR_PPR;
     Serial.print((int)a);Serial.print(",");
     Serial.print((int)i);Serial.print(",");
@@ -162,7 +162,20 @@ int checkErrorDirection() {
   return 0; //OK
 }
 
+#if ENABLE_PRINTS>99
+void printDebugInfoToSerialPlotter() {
+  static Millis t = Millis(100);
+  if (t.check()) {
+    t.reset();
+    Serial.println(calculateError());
+  }
+}
+#endif
+
 void loop() {
   runLed();
   runMotor();
+  #if ENABLE_PRINTS>99
+    printDebugInfoToSerialPlotter();
+  #endif
 }

@@ -37,8 +37,8 @@ void setup() {
   Serial.println("Starting...");
 }
 
-long int volatile encoder_position = 0;
-long int volatile in_stepCounter = 0;
+long long int volatile encoder_position = 0;
+long long int volatile in_stepCounter = 0;
 
 bool motorJamming = false;
 bool errorHappened = false;
@@ -93,17 +93,26 @@ ISR (PCINT2_vect)
   volatile u8 pind = PIND & 0b00110000;
   volatile char current_phase_index;
   
-  for(int i=0;i<4;i++) {
+  /*for(int i=0;i<4;i++) {
     if(pind==phase_array[i]) {
       current_phase_index=i;
       break;
     }
-  }
+  }*/ //Search phase index
+  for(current_phase_index=0;pind!=phase_array[current_phase_index];current_phase_index++);
 
   if(((previous_phase_index+1)&0b11)==current_phase_index) {
-    encoder_position++;
+    #ifdef FLIP_ENCODER
+      encoder_position--;
+    #else
+      encoder_position++;
+    #endif
   } else if(((previous_phase_index-1)&0b11)==current_phase_index) {
-    encoder_position--;
+    #ifdef FLIP_ENCODER
+      encoder_position++;
+    #else
+      encoder_position--;
+    #endif
   } else {
     if(previous_phase_index!=0xff) {
       Serial.print((int)previous_phase_index);
@@ -116,8 +125,8 @@ ISR (PCINT2_vect)
 
 
 int calculateError() {
-  long int volatile a;
-  long int volatile i;
+  long long int volatile a;
+  long long int volatile i;
 
   cli();
   a = encoder_position;

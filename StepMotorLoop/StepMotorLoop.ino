@@ -61,7 +61,7 @@ ISR (PCINT0_vect)
     PORTC = pinb; //Forward StepIn,DirIn,EnIn to stepmotor controller
   }
 
-  if (stepIn && lastStepInState==0 ) { //Rising edge, EN === enabled
+  if (stepIn && lastStepInState==0) { //Rising edge, EN === enabled
     if (dirIn) {
       in_stepCounter--;
     } else {
@@ -108,8 +108,10 @@ ISR (PCINT2_vect)
   } else {
     if(previous_phase_index!=0xff) {
       #if ENABLE_PRINTS>0
-      Serial.print((int)previous_phase_index);
-      Serial.println("Lost phase synchronization!!!");
+      Serial.print("Lost phase synchronization!!! ");
+      Serial.print((int)current_phase_index);
+      Serial.print(",");
+      Serial.println((int)previous_phase_index);
       #endif
     }
   }

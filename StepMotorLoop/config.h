@@ -8,7 +8,7 @@
 
 #define MOTOR_PPR (200*16) //Pulses per Revolution
 
-//#define FLIP_ENCODER 
+//#define FLIP_ENCODER
 
 #define ENABLE_PRINTS 0
 

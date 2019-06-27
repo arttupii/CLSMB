@@ -4,7 +4,6 @@
 #include <Millis.h>
 #include "config.h"
 
-
 void setup() {
   cli();
 
@@ -48,6 +47,16 @@ int errSteps;
 
 volatile u8 lastStepInState=0;
 
+void printBits(byte myByte){
+ for(byte mask = 0x80; mask; mask >>= 1){
+   if(mask  & myByte)
+       Serial.print('1');
+   else
+       Serial.print('0');
+ }
+ Serial.println();
+}
+
 //Handle EN_PIN & STEP_IN change interrupt
 ISR (PCINT0_vect)
 {
@@ -60,42 +69,49 @@ ISR (PCINT0_vect)
     PORTC = pinb; //Forward StepIn,DirIn,EnIn to stepmotor controller
   }
 
-  if (stepIn && lastStepInState==0 && !enIn) { //Rising edge, EN === enabled
+  if (stepIn && lastStepInState==0 ) { //Rising edge, EN === enabled
     if (dirIn) {
-      in_stepCounter++;
-    } else {
       in_stepCounter--;
+    } else {
+      in_stepCounter++;
     }
   } 
   lastStepInState = stepIn;
 }
 
+volatile const u8 phase_array[] = {
+    0b00110000,
+    0b00010000,
+    0b00000000,
+    0b00100000,
+};
+volatile char previous_phase_index = 0xff;
+
 //Handle quadrature signals
 ISR (PCINT2_vect)
 {
-  //Copied from https://reprap.org/wiki/Magnetic_Rotary_Encoder_v1.0
-  volatile u8 pind = PIND;
-  volatile u8 in_a = pind & 0b00010000;
-  volatile u8 in_b = pind & 0b00100000;
+  volatile u8 pind = PIND & 0b00110000;
+  volatile char current_phase_index;
+  
+  for(int i=0;i<4;i++) {
+    if(pind==phase_array[i]) {
+      current_phase_index=i;
+      break;
+    }
+  }
 
-  // found a low-to-high on channel A
-  if (in_a)
-  {
-    // check channel B to see which way
-    if (in_b)
-      encoder_position--;
-    else
-      encoder_position++;
+  if(((previous_phase_index+1)&0b11)==current_phase_index) {
+    encoder_position++;
+  } else if(((previous_phase_index-1)&0b11)==current_phase_index) {
+    encoder_position--;
+  } else {
+    if(previous_phase_index!=0xff) {
+      Serial.print((int)previous_phase_index);
+      Serial.println("Lost phase synchronization!!!");
+    }
   }
-  // found a high-to-low on channel A
-  else
-  {
-    // check channel B to see which way
-    if (in_b)
-      encoder_position++;
-    else
-      encoder_position--;
-  }
+
+  previous_phase_index = current_phase_index;
 }
 
 
@@ -115,19 +131,19 @@ int checkErrorDirection() {
   static bool errorFound = false;
   int m = calculateError();
 
-  if (m < -10 || m > 10) {
+  if (m < -50 || m > 50) {
     errorFound = true;
   }
 
-  if (m >= -5 && m <= 5) {
+  if (m >= -10 && m <= 10) {
     errorFound = false;
   }
 
   if (errorFound) {
     if (m < 0) {
-      return 1;
-    } else {
       return 2;
+    } else {
+      return 1;
     }
   }
   return 0; //OK
@@ -137,10 +153,7 @@ void printDebugInfo() {
   static Millis t = Millis(100);
   if (t.check()) {
     t.reset();
-
-    Serial.print(in_stepCounter);
-    Serial.print(",");
-    Serial.println(encoder_position);
+    Serial.println(calculateError());
   }
 }
 
@@ -149,6 +162,6 @@ void loop() {
   // runMotor();
   runLed();
   // runMotor();
-  // printDebugInfo();
+  //printDebugInfo();
   runMotor();
 }

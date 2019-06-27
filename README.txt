@@ -47,6 +47,9 @@ Hox!
         steps loss --> FEED HOLD is LOW.
         normally ---> FEED HOLD is open
 
+Demo video: 
+https://youtu.be/jLogS5AQ-yQ (AS5040 encoder and A4988 step motor controller)
+
 You need this library (Micros.h&Millis.h):
 https://github.com/arttupii/ArduinoHelperLibrary
 

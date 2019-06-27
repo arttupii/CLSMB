@@ -1376,6 +1376,25 @@ type 0207, grid 10 mm</description>
 <rectangle x1="3.175" y1="-0.3048" x2="4.0386" y2="0.3048" layer="21"/>
 <rectangle x1="-4.0386" y1="-0.3048" x2="-3.175" y2="0.3048" layer="21"/>
 </package>
+<package name="E1,8-4" urn="urn:adsk.eagle:footprint:22840/1" library_version="10">
+<description>&lt;b&gt;ELECTROLYTIC CAPACITOR&lt;/b&gt;&lt;p&gt;
+grid 1.8 mm, diameter 4 mm</description>
+<wire x1="-1.524" y1="0" x2="-0.762" y2="0" width="0.1524" layer="51"/>
+<wire x1="-0.762" y1="0" x2="-0.762" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="-0.762" y1="-1.016" x2="-0.254" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="-0.254" y1="-1.016" x2="-0.254" y2="1.016" width="0.1524" layer="51"/>
+<wire x1="-0.254" y1="1.016" x2="-0.762" y2="1.016" width="0.1524" layer="51"/>
+<wire x1="-0.762" y1="1.016" x2="-0.762" y2="0" width="0.1524" layer="51"/>
+<wire x1="0.635" y1="0" x2="1.524" y2="0" width="0.1524" layer="51"/>
+<wire x1="-1.016" y1="1.397" x2="-0.508" y2="1.397" width="0.1524" layer="21"/>
+<wire x1="-0.762" y1="1.143" x2="-0.762" y2="1.651" width="0.1524" layer="21"/>
+<circle x="0" y="0" radius="2.032" width="0.1524" layer="21"/>
+<pad name="-" x="0.889" y="0" drill="0.7112" diameter="1.1684" shape="octagon"/>
+<pad name="+" x="-0.889" y="0" drill="0.7112" diameter="1.1684"/>
+<text x="2.159" y="0.762" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="2.159" y="-1.778" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+<rectangle x1="0.254" y1="-1.016" x2="0.762" y2="1.016" layer="51"/>
+</package>
 </packages>
 <packages3d>
 <package3d name="E5-8,5" urn="urn:adsk.eagle:package:23374/1" type="box" library_version="10">
@@ -1397,6 +1416,13 @@ grid 2.5 mm, outline 3 x 5 mm</description>
 type 0207, grid 10 mm</description>
 <packageinstances>
 <packageinstance name="0207/10"/>
+</packageinstances>
+</package3d>
+<package3d name="E1,8-4" urn="urn:adsk.eagle:package:23336/2" type="model" library_version="10">
+<description>ELECTROLYTIC CAPACITOR
+grid 1.8 mm, diameter 4 mm</description>
+<packageinstances>
+<packageinstance name="E1,8-4"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -2285,6 +2311,11 @@ design rules under a new name.</description>
 <attribute name="SPICEPREFIX" value="R" x="9.525" y="21.59" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="10.16" y="19.3294" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
+<element name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" package="E1,8-4" package3d_urn="urn:adsk.eagle:package:23336/2" value="" x="21.59" y="32.0675" smashed="yes" rot="R90">
+<attribute name="NAME" x="20.828" y="34.2265" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="SPICEPREFIX" value="C" x="21.59" y="32.0675" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="23.368" y="34.2265" size="1.27" layer="27" ratio="10" rot="R90"/>
+</element>
 </elements>
 <signals>
 <signal name="N$1">
@@ -2365,7 +2396,7 @@ design rules under a new name.</description>
 <wire x1="27.94" y1="39.37" x2="24.13" y2="35.56" width="0.1524" layer="16"/>
 <wire x1="34.29" y1="39.37" x2="27.94" y2="39.37" width="0.1524" layer="16"/>
 <wire x1="25.695" y1="30.465" x2="25.695" y2="32.725" width="0.1524" layer="16"/>
-<wire x1="25.695" y1="32.725" x2="24.13" y2="34.29" width="0.1524" layer="16"/>
+<wire x1="25.4635" y1="32.9565" x2="24.13" y2="34.29" width="0.1524" layer="16"/>
 <wire x1="24.13" y1="34.29" x2="24.13" y2="35.56" width="0.1524" layer="16"/>
 <wire x1="25.695" y1="30.465" x2="25.695" y2="27.9175" width="0.1524" layer="16"/>
 <wire x1="25.045" y1="27.2675" x2="25.045" y2="22.875" width="0.1524" layer="16"/>
@@ -2407,6 +2438,9 @@ design rules under a new name.</description>
 <via x="21.59" y="26.035" extent="1-16" drill="0.35"/>
 <via x="23.495" y="20.955" extent="1-16" drill="0.35"/>
 <via x="26.67" y="17.78" extent="1-16" drill="0.35"/>
+<contactref element="C4" pad="-"/>
+<wire x1="21.59" y1="32.9565" x2="25.4635" y2="32.9565" width="0.1524" layer="16"/>
+<wire x1="25.4635" y1="32.9565" x2="25.695" y2="32.725" width="0.1524" layer="16"/>
 </signal>
 <signal name="+5V">
 <contactref element="U$1" pad="VDD"/>
@@ -2552,10 +2586,11 @@ design rules under a new name.</description>
 <contactref element="B1" pad="19"/>
 <contactref element="U$1" pad="EN"/>
 <wire x1="34.29" y1="35.56" x2="28.28645" y2="35.56" width="0.1524" layer="1"/>
-<wire x1="28.28645" y1="35.56" x2="27.14345" y2="34.417" width="0.1524" layer="1"/>
-<wire x1="27.14345" y1="34.417" x2="22.987" y2="34.417" width="0.1524" layer="1"/>
-<wire x1="19.05" y1="30.48" x2="17.78" y2="30.48" width="0.1524" layer="1"/>
-<wire x1="22.987" y1="34.417" x2="19.05" y2="30.48" width="0.1524" layer="1"/>
+<wire x1="27.14345" y1="34.417" x2="28.28645" y2="35.56" width="0.1524" layer="1"/>
+<wire x1="17.78" y1="30.48" x2="20.4978" y2="33.1978" width="0.1524" layer="1"/>
+<wire x1="20.4978" y1="33.1978" x2="20.4978" y2="33.40890625" width="0.1524" layer="1"/>
+<wire x1="20.4978" y1="33.40890625" x2="21.50589375" y2="34.417" width="0.1524" layer="1"/>
+<wire x1="21.50589375" y1="34.417" x2="27.14345" y2="34.417" width="0.1524" layer="1"/>
 </signal>
 <signal name="N$11">
 <contactref element="U$1" pad="SLP"/>
@@ -2612,6 +2647,15 @@ design rules under a new name.</description>
 <contactref element="R2" pad="1"/>
 <wire x1="9.525" y1="20.32" x2="9.525" y2="16.51" width="0.1524" layer="1"/>
 <wire x1="9.525" y1="12.7" x2="9.525" y2="16.51" width="0.1524" layer="1"/>
+</signal>
+<signal name="N$15">
+<contactref element="IC1" pad="15"/>
+<contactref element="C4" pad="+"/>
+<wire x1="21.59" y1="31.1785" x2="26.0985" y2="26.67" width="0.1524" layer="1"/>
+<wire x1="26.0985" y1="26.67" x2="27.94" y2="26.67" width="0.1524" layer="1"/>
+<via x="27.94" y="26.67" extent="1-16" drill="0.35"/>
+<wire x1="27.94" y1="26.67" x2="28.295" y2="27.025" width="0.1524" layer="16"/>
+<wire x1="28.295" y1="27.025" x2="28.295" y2="30.465" width="0.1524" layer="16"/>
 </signal>
 </signals>
 <mfgpreviewcolors>

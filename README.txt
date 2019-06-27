@@ -42,7 +42,6 @@ Use standard rotary encoder (HN3806-AB-400N or similar)
 
 Hox!
  - Because of speed optimizations you cannot change pinout without code changes. 
- - This has not been tested yet. (My encoder is still somewhere between China and my home.)
  - FEED HOLD is open collector output. With this pin you can ask "feed hold" from CNC machine controller
         steps loss --> FEED HOLD is LOW.
         normally ---> FEED HOLD is open

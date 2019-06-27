@@ -10,5 +10,6 @@
 
 //#define FLIP_ENCODER 
 
+#define ENABLE_PRINTS 0
 
 #endif

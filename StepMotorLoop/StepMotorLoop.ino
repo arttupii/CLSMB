@@ -33,8 +33,10 @@ void setup() {
 
   sei();//Enable interrupts
 
-  Serial.begin(115200);
-  Serial.println("Starting...");
+  #if ENABLE_PRINTS>0
+    Serial.begin(115200);
+    Serial.println("Starting...");
+  #endif
 }
 
 long long int volatile encoder_position = 0;
@@ -46,16 +48,6 @@ bool errorHappened = false;
 int errSteps;
 
 volatile u8 lastStepInState=0;
-
-void printBits(byte myByte){
- for(byte mask = 0x80; mask; mask >>= 1){
-   if(mask  & myByte)
-       Serial.print('1');
-   else
-       Serial.print('0');
- }
- Serial.println();
-}
 
 //Handle EN_PIN & STEP_IN change interrupt
 ISR (PCINT0_vect)
@@ -115,8 +107,10 @@ ISR (PCINT2_vect)
     #endif
   } else {
     if(previous_phase_index!=0xff) {
+      #if ENABLE_PRINTS>0
       Serial.print((int)previous_phase_index);
       Serial.println("Lost phase synchronization!!!");
+      #endif
     }
   }
 
@@ -133,7 +127,17 @@ int calculateError() {
   i = in_stepCounter;
   sei();
 
-  return (a) - ((ENCODER_PPR ) * i) / MOTOR_PPR;
+  int ret = (a) - ((ENCODER_PPR ) * i) / MOTOR_PPR;
+
+  #if ENABLE_PRINTS>99
+    int converted = ((ENCODER_PPR ) * i) / MOTOR_PPR;
+    Serial.print((int)a);Serial.print(",");
+    Serial.print((int)i);Serial.print(",");
+    Serial.print(converted);Serial.print(",");
+    Serial.print(ret);Serial.println();
+  #endif
+    
+  return ret;
 }
 
 int checkErrorDirection() {
@@ -158,19 +162,7 @@ int checkErrorDirection() {
   return 0; //OK
 }
 
-void printDebugInfo() {
-  static Millis t = Millis(100);
-  if (t.check()) {
-    t.reset();
-    Serial.println(calculateError());
-  }
-}
-
 void loop() {
-  //digitalWrite(MOTOR_EN, digitalRead(IN_EN));
-  // runMotor();
   runLed();
-  // runMotor();
-  //printDebugInfo();
   runMotor();
 }

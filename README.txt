@@ -57,6 +57,7 @@ Hox!
  
 Demo video: 
 https://youtu.be/jLogS5AQ-yQ (AS5040 encoder and A4988 step motor controller)
+https://youtu.be/jxansaLNb5I (Serial Plotter view. #define ENABLE_PRINTS 100)
 
 You need this library (Micros.h&Millis.h):
 https://github.com/arttupii/ArduinoHelperLibrary

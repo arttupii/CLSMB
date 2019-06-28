@@ -133,9 +133,9 @@ int calculateError() {
 
   #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
     int converted = ((ENCODER_PPR ) * i) / MOTOR_PPR;
-    Serial.print((int)a);Serial.print(",");
-    Serial.print((int)i);Serial.print(",");
-    Serial.print(converted);Serial.print(",");
+    Serial.print((int)a);Serial.print(" ");
+    Serial.print((int)i);Serial.print(" ");
+    Serial.print(converted);Serial.print(" ");
     Serial.print(ret);Serial.println();
   #endif
     

@@ -12,7 +12,7 @@ Closed loop step motor controller
                         |   Arduino     |    |         |        |
            dirIn------->|D9 Nano        |    |  A   B  |        |
                         |               |    +---------+--------+
-           EnIn-------->|D10            |       |   |     ^^^^    
+           EnIn-------->|D10            |       |   |     ^^^^
                         |               |IN_A   |   |     ||||
            LED---------<|D13          D4|<------+   |     ||||
                         |               |           |     ||||
@@ -23,7 +23,7 @@ Closed loop step motor controller
                         +---------------+                 ||||
                            |   |   |                      ||||
                            |   |   |                      ||||
-                           V   V   V                      ||||                                              
+                           V   V   V                      ||||
                         +---------------+                 ||||
                         | !EN DIR  STEP |                 ||||
                         |               |                 ||||
@@ -38,6 +38,31 @@ Closed loop step motor controller
                         |               |
                         +---------------+                   
 
+Block diagram
+                   +----------------------------------+  
+                   |   +----------+                   |  
+ Input(Step,En,Dir)|   | Input    |                   |                                             
+ ------------------+-->| counter  |                   |                                                  
+                       |          |                   |              +--------------+       +--------------+
+                   +---|          |                   |              |              |       | Step Motor   |
+                   |   +----------+                   V    (Switch)  | Step         |       |              |
+                   |                                  +----O         | Motor        |------>|              |
+                   |   +----------+   +----------+         ------O-->| Driver       |       |              |
+                   +-->|Deviation |   |          |    +----O  ^      | (e.g TB6600) |       |              |
+                       |counter   |-->| >n steps |    ^       |      |              |       |              |
+                   +-->|          |   |          |    |       |      +--------------+       +--------------+
+                   |   +----------+   +---------+     |       |                             | Rotary       |
+                   |                        |         |       |                             | encorer      |
+                   |                        V         |       |                             |              |
+                   |   +----------+      +----------------+   |                             |              |
+                   +---|Rotation  |      |                |   |                             +--------------+
+                       |position  |      | Fix position   |   |                                    |
+                       |counter   |      | (Generate      |---+                                    |     
+                   +-->|          |      |step,dir pulses)|                                        |     
+                   |   +----------+      +----------------+                                        |     
+                   |                                                                               |  
+                   +-------------------------------------------------------------------------------+
+                   
 Hox!
  - Because of speed optimizations you cannot change pinout without code changes. 
  - FEED HOLD is open collector output. With this pin you can ask "feed hold" from CNC machine controller

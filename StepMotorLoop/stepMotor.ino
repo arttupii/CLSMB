@@ -10,6 +10,7 @@
 #define HOLD_ON_REQ DDRD|=0b10000000 //HOLD_ON is LOW. Use D7 pin like open collector output
 #define CANCEL_HOLD_ON_REQ DDRD&=0b01111111 //HOLD_ON is OPEN
 
+unsigned long int step_0_pulse_wide = ((unsigned long int )1000000/((unsigned long int )NEMA_MOTOR_PPR*((unsigned long int )STEP_MOTOR_REV_PER_SEC)))-STEP_1_PULSE_US;
 
 void runMotor() {
   int dir;
@@ -39,5 +40,5 @@ void runMotor() {
   SET_MOTOR_STEP_HIGH;
   delayMicroseconds(STEP_1_PULSE_US);
   SET_MOTOR_STEP_LOW;
-  delayMicroseconds(STEP_0_PULSE_US);
+  delayMicroseconds(step_0_pulse_wide);
 }

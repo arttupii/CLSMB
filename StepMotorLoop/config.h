@@ -4,7 +4,7 @@
 #define ENCODER_PPR 1024 //Pulses per Revolution (AS5040)
 //#define ENCODER_PPR 400 //Pulses per Revolution (HN3806-AB -400N)
 
-#define STEP_MOTOR_RPM 1000 //rotations per minute. Fixing speed
+#define STEP_MOTOR_REV_PER_SEC 15 //revolutions/second. Fixing speed
 
 #define NEMA_MOTOR_FULL_STEPS 200
 #define NEMA_MOTOR_MICROSTEPS 16
@@ -15,9 +15,8 @@
 
 //#define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
 
-#define ENABLE_PRINTS 0
+#define ENABLE_PRINTS 100
 
-#define STEP_1_PULSE_US 10 //pulse wide
-#define STEP_0_PULSE_US (NEMA_MOTOR_PPR/60/STEP_1_PULSE_US)
+#define STEP_1_PULSE_US 8 //pulse wide
 
 #endif

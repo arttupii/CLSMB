@@ -129,10 +129,10 @@ int calculateError() {
   i = in_stepCounter;
   sei();
 
-  int ret = (a) - ((ENCODER_PPR ) * i) / MOTOR_PPR;
+  int ret = (a) - ((ENCODER_PPR ) * i) / NEMA_MOTOR_PPR;
 
   #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
-    int converted = ((ENCODER_PPR ) * i) / MOTOR_PPR;
+    int converted = ((ENCODER_PPR ) * i) / NEMA_MOTOR_PPR;
     Serial.print((int)a);Serial.print(" ");
     Serial.print((int)i);Serial.print(" ");
     Serial.print(converted);Serial.print(" ");
@@ -146,11 +146,11 @@ int checkErrorDirection() {
   static bool errorFound = false;
   int m = calculateError();
 
-  if (m < -50 || m > 50) {
+  if (m < -STEP_ERROR_MAX || m > STEP_ERROR_MAX) {
     errorFound = true;
   }
 
-  if (m >= -10 && m <= 10) {
+  if (m >= -STEP_ERROR_MIN && m <= STEP_ERROR_MIN) {
     errorFound = false;
   }
 

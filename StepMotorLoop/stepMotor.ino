@@ -12,56 +12,32 @@
 
 
 void runMotor() {
-  static Micros t;
-  static int state = 0;
-  static int dir;
+  int dir;
 
   if (READ_EN_PIN) {
     return;
   }
 
-  switch (state) {
-    case 0: { //Check errors
-        dir = checkErrorDirection();
-        if (dir) {
-          motorJamming = true;
-          errorHappened = true;
-          HOLD_ON_REQ;
-          state++;
-        } else {
-          motorJamming = false;
-          CANCEL_HOLD_ON_REQ;
-          break;
-        }
-      }
-    case 1: {
-        SET_MOTOR_STEP_LOW;
-        if (dir == 1) {
-          SET_MOTOR_DIR_HIGH;
-        } else {
-          SET_MOTOR_DIR_LOW;
-        }
-        t.setTime(STEP_1_PULSE_US);
-
-        SET_MOTOR_STEP_HIGH;
-        state++;
-      }
-    case 2: {
-        if (t.check()) {
-          SET_MOTOR_STEP_LOW;
-          t.setTime(STEP_0_PULSE_US);
-          state++;
-        }
-        break;
-      }
-    case 3: {
-        if (t.check()) {
-          state = 0;
-        }
-      }
-      break;
-    default:
-      state = 0;
-      break;
+  dir = checkErrorDirection();
+  if (dir) {
+    motorJamming = true;
+    errorHappened = true;
+    HOLD_ON_REQ;
+  } else {
+    motorJamming = false;
+    CANCEL_HOLD_ON_REQ;
+    return;
   }
+  
+  SET_MOTOR_STEP_LOW;
+  if (dir == 1) {
+    SET_MOTOR_DIR_HIGH;
+  } else {
+    SET_MOTOR_DIR_LOW;
+  }
+
+  SET_MOTOR_STEP_HIGH;
+  delayMicroseconds(STEP_1_PULSE_US);
+  SET_MOTOR_STEP_LOW;
+  delayMicroseconds(STEP_0_PULSE_US);
 }

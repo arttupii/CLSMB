@@ -1,8 +1,7 @@
 #ifndef __CONFIG__H_
 #define __CONFIG__H_
 
-#define ENCODER_PPR 1024 //Pulses per Revolution (AS5040)
-//#define ENCODER_PPR 400 //Pulses per Revolution (HN3806-AB -400N)
+#define ENCODER_STATE_CHANGE_PER_REV 1024 //State change per Revolution (AS5040)
 
 #define STEP_MOTOR_REV_PER_SEC 15 //revolutions/second. Fixing speed
 

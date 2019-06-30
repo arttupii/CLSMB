@@ -129,7 +129,7 @@ int calculateError() {
   i = in_stepCounter;
   sei();
 
-  int ret = (a) - ((ENCODER_PPR ) * i) / NEMA_MOTOR_PPR;
+  int ret = (a) - ((ENCODER_STATE_CHANGE_PER_REV ) * i) / NEMA_MOTOR_PPR;
 
   #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
     int converted = ((ENCODER_PPR ) * i) / NEMA_MOTOR_PPR;

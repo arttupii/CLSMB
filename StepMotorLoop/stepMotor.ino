@@ -27,7 +27,6 @@ void runMotor() {
   dir = checkErrorDirection();
   if (dir) {
     motorJamming = true;
-    errorHappened = true;
     HOLD_ON_REQ;
     SET_LED_HIGH;
     ledOnTimer.reset();

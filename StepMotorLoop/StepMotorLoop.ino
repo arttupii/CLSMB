@@ -47,7 +47,6 @@ long long int volatile public_in_stepCounter = 0;
 
 
 bool motorJamming = false;
-bool errorHappened = false;
 
 int errSteps;
 

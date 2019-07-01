@@ -10,7 +10,12 @@
 #define HOLD_ON_REQ DDRD|=0b10000000 //HOLD_ON is LOW. Use D7 pin like open collector output
 #define CANCEL_HOLD_ON_REQ DDRD&=0b01111111 //HOLD_ON is OPEN
 
+#define SET_LED_HIGH PORTB|=0b00100000
+#define SET_LED_LOW PORTB&=0b11011111
+
 unsigned long int step_0_pulse_wide = ((unsigned long int )1000000/((unsigned long int )NEMA_MOTOR_PPR*((unsigned long int )STEP_MOTOR_REV_PER_SEC)))-STEP_1_PULSE_US;
+
+static Millis ledOnTimer = Millis(100);
 
 void runMotor() {
   int dir;
@@ -24,10 +29,15 @@ void runMotor() {
     motorJamming = true;
     errorHappened = true;
     HOLD_ON_REQ;
+    SET_LED_HIGH;
+    ledOnTimer.reset();
   } else {
     motorJamming = false;
     CANCEL_HOLD_ON_REQ;
-    return;
+    if (ledOnTimer.check()) {
+       SET_LED_LOW;
+    }
+   return;
   }
   
   SET_MOTOR_STEP_LOW;

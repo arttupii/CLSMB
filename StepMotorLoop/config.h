@@ -9,8 +9,8 @@
 #define NEMA_MOTOR_MICROSTEPS 16
 #define NEMA_MOTOR_PPR (NEMA_MOTOR_FULL_STEPS * NEMA_MOTOR_MICROSTEPS)
 
-#define STEP_ERROR_MAX 50 //Start position repairing if position deviation is more than this
-#define STEP_ERROR_MIN 10 //Stop position repairing if position deviation is less than this
+#define STEP_ERROR_MAX 10 //Start position repairing if position deviation is more than this
+#define STEP_ERROR_MIN 1 //Stop position repairing if position deviation is less than this
 
 //#define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
 

@@ -39,8 +39,12 @@ void setup() {
   #endif
 }
 
-long long int volatile encoder_position = 0;
-long long int volatile in_stepCounter = 0;
+long long int volatile internal_encoder_position = 0; //Use only in interrupt functions
+long long int volatile internal_in_stepCounter = 0;   //Use only in interrupt functions
+
+long long int volatile public_encoder_position = 0;
+long long int volatile public_in_stepCounter = 0;
+
 
 bool motorJamming = false;
 bool errorHappened = false;
@@ -63,9 +67,9 @@ ISR (PCINT0_vect)
 
   if (stepIn && lastStepInState==0) { //Rising edge, EN === enabled
     if (dirIn) {
-      in_stepCounter--;
+      internal_in_stepCounter--;
     } else {
-      in_stepCounter++;
+      internal_in_stepCounter++;
     }
   } 
   lastStepInState = stepIn;
@@ -85,25 +89,20 @@ ISR (PCINT2_vect)
   volatile u8 pind = PIND & 0b00110000;
   volatile char current_phase_index;
   
-  /*for(int i=0;i<4;i++) {
-    if(pind==phase_array[i]) {
-      current_phase_index=i;
-      break;
-    }
-  }*/ //Search phase index
+  //Search phase index
   for(current_phase_index=0;pind!=phase_array[current_phase_index];current_phase_index++);
 
   if(((previous_phase_index+1)&0b11)==current_phase_index) {
     #ifdef FLIP_ENCODER
-      encoder_position--;
+      internal_encoder_position--;
     #else
-      encoder_position++;
+      internal_encoder_position++;
     #endif
   } else if(((previous_phase_index-1)&0b11)==current_phase_index) {
     #ifdef FLIP_ENCODER
-      encoder_position++;
+      internal_encoder_position++;
     #else
-      encoder_position--;
+      internal_encoder_position--;
     #endif
   } else {
     if(previous_phase_index!=0xff) {
@@ -116,21 +115,25 @@ ISR (PCINT2_vect)
     }
   }
 
+  public_encoder_position = internal_encoder_position;
+  public_in_stepCounter = internal_in_stepCounter;
+
   previous_phase_index = current_phase_index;
 }
 
 
-int calculateError() {
-  long long int volatile a;
-  long long int volatile i;
+float calculateError() {
+  long long int a;
+  long long int i;
 
   cli();
-  a = encoder_position;
-  i = in_stepCounter;
+  a = public_encoder_position;
+  i = public_in_stepCounter;
   sei();
 
-  int ret = (a) - ((ENCODER_STATE_CHANGE_PER_REV ) * i) / NEMA_MOTOR_PPR;
-
+  long long int converted_motor_position = ((i * ((long long int)ENCODER_STATE_CHANGE_PER_REV*100) / (long long int)NEMA_MOTOR_PPR));
+  long long int ret = a*100 - converted_motor_position;
+ 
   #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
     int converted = ((ENCODER_PPR ) * i) / NEMA_MOTOR_PPR;
     Serial.print((int)a);Serial.print(" ");
@@ -139,7 +142,7 @@ int calculateError() {
     Serial.print(ret);Serial.println();
   #endif
     
-  return ret;
+  return (float)ret/100;
 }
 
 int checkErrorDirection() {
@@ -175,7 +178,6 @@ void printDebugInfoToSerialPlotter() {
 #endif
 
 void loop() {
-  runLed();
   runMotor();
   #if ENABLE_PRINTS>99
     printDebugInfoToSerialPlotter();

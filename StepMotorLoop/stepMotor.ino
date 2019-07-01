@@ -15,16 +15,19 @@
 
 unsigned long int step_0_pulse_wide = ((unsigned long int )1000000/((unsigned long int )NEMA_MOTOR_PPR*((unsigned long int )STEP_MOTOR_REV_PER_SEC)))-STEP_1_PULSE_US;
 
-static Millis ledOnTimer = Millis(100);
+static Millis ledOnTimer = Millis(200);
 
-void runMotor() {
+inline void runMotor() {
   int dir;
 
   if (READ_EN_PIN) {
     return;
   }
 
-  dir = checkErrorDirection();
+  //long u0 = micros();
+  dir = checkErrorDirection(); //Takes 8-12us
+  //Serial.println(micros()-u0);
+  
   if (dir) {
     motorJamming = true;
     HOLD_ON_REQ;
@@ -49,5 +52,5 @@ void runMotor() {
   SET_MOTOR_STEP_HIGH;
   delayMicroseconds(STEP_1_PULSE_US);
   SET_MOTOR_STEP_LOW;
-  delayMicroseconds(step_0_pulse_wide);
+  delayMicroseconds(step_0_pulse_wide-10); //checErrorDirection() takes 8-12us --> -10us
 }

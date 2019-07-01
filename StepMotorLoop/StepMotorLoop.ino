@@ -39,12 +39,8 @@ void setup() {
   #endif
 }
 
-long long int volatile internal_encoder_position = 0; //Use only in interrupt functions
-long long int volatile internal_in_stepCounter = 0;   //Use only in interrupt functions
-
-long long int volatile public_encoder_position = 0;
-long long int volatile public_in_stepCounter = 0;
-
+long volatile internal_encoder_position = 0; //Use only in interrupt functions
+long  volatile internal_in_stepCounter = 0;   //Use only in interrupt functions
 
 bool motorJamming = false;
 
@@ -114,24 +110,21 @@ ISR (PCINT2_vect)
     }
   }
 
-  public_encoder_position = internal_encoder_position;
-  public_in_stepCounter = internal_in_stepCounter;
-
   previous_phase_index = current_phase_index;
 }
 
-
-float calculateError() {
-  long long int a;
-  long long int i;
+long conversion_value = (ENCODER_STATE_CHANGE_PER_REV<<7) / NEMA_MOTOR_PPR; //'<<' is  five time faster than '*'  or (ENCODER_STATE_CHANGE_PER_REV*100)
+inline int calculateError() {
+  volatile long  a;
+  volatile long  i;
 
   cli();
-  a = public_encoder_position;
-  i = public_in_stepCounter;
+  a = internal_encoder_position;
+  i = internal_in_stepCounter;
   sei();
 
-  long long int converted_motor_position = ((i * ((long long int)ENCODER_STATE_CHANGE_PER_REV*100) / (long long int)NEMA_MOTOR_PPR));
-  long long int ret = a*100 - converted_motor_position;
+  long int converted_motor_position = (i * conversion_value)>>7; //'>>' is five time faster than '/' or (i * conversion_value)/100
+  long int ret = a - converted_motor_position;
  
   #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
     int converted = ((ENCODER_PPR ) * i) / NEMA_MOTOR_PPR;
@@ -141,10 +134,10 @@ float calculateError() {
     Serial.print(ret);Serial.println();
   #endif
     
-  return (float)ret/100;
+  return ret;
 }
 
-int checkErrorDirection() {
+inline int checkErrorDirection() {
   static bool errorFound = false;
   int m = calculateError();
 
@@ -155,7 +148,6 @@ int checkErrorDirection() {
   if (m >= -STEP_ERROR_MIN && m <= STEP_ERROR_MIN) {
     errorFound = false;
   }
-
   if (errorFound) {
     if (m < 0) {
       return 2;
@@ -163,11 +155,12 @@ int checkErrorDirection() {
       return 1;
     }
   }
+  
   return 0; //OK
 }
 
 #if ENABLE_PRINTS>99
-void printDebugInfoToSerialPlotter() {
+inline void printDebugInfoToSerialPlotter() {
   static Millis t = Millis(100);
   if (t.check()) {
     t.reset();
@@ -177,8 +170,10 @@ void printDebugInfoToSerialPlotter() {
 #endif
 
 void loop() {
-  runMotor();
-  #if ENABLE_PRINTS>99
-    printDebugInfoToSerialPlotter();
-  #endif
+  while(1) {
+    runMotor();
+    #if ENABLE_PRINTS>99
+      printDebugInfoToSerialPlotter();
+    #endif
+  }
 }

@@ -1,12 +1,12 @@
 #ifndef __CONFIG__H_
 #define __CONFIG__H_
 
-#define ENCODER_STATE_CHANGE_PER_REV 1024L //State change per Revolution (A+B) (AS5040)
+#define ENCODER_STATE_CHANGE_PER_REV 1024.0 //State change per Revolution (A+B) (AS5040)
 
-#define STEP_MOTOR_REV_PER_SEC 5 //revolutions/second. Fixing speed
+#define STEP_MOTOR_REV_PER_SEC 4 //revolutions/second. Fixing speed
 
-#define NEMA_MOTOR_FULL_STEPS 200L
-#define NEMA_MOTOR_MICROSTEPS 16L
+#define NEMA_MOTOR_FULL_STEPS 200.0
+#define NEMA_MOTOR_MICROSTEPS 16.0
 #define NEMA_MOTOR_PPR (NEMA_MOTOR_FULL_STEPS * NEMA_MOTOR_MICROSTEPS)
 
 #define STEP_ERROR_MAX 20 //Start position repairing if position deviation is more than this

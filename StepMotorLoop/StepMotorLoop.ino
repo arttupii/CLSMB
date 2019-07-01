@@ -34,8 +34,8 @@ void setup() {
   sei();//Enable interrupts
 
   #if ENABLE_PRINTS>0
-    Serial.begin(115200);
-    Serial.println("Starting...");
+    Serial.begin(230400);
+   // Serial.println("Starting...");
   #endif
 }
 
@@ -102,10 +102,10 @@ ISR (PCINT2_vect)
   } else {
     if(previous_phase_index!=0xff) {
       #if ENABLE_PRINTS>0
-      Serial.print("Lost phase synchronization!!! ");
-      Serial.print((int)current_phase_index);
-      Serial.print(",");
-      Serial.println((int)previous_phase_index);
+        Serial.print("Lost phase synchronization!!! ");
+        Serial.print((int)current_phase_index);
+        Serial.print(",");
+        Serial.println((int)previous_phase_index);
       #endif
     }
   }
@@ -113,27 +113,24 @@ ISR (PCINT2_vect)
   previous_phase_index = current_phase_index;
 }
 
-long conversion_value = (ENCODER_STATE_CHANGE_PER_REV<<7) / NEMA_MOTOR_PPR; //'<<' is  five time faster than '*'  or (ENCODER_STATE_CHANGE_PER_REV*100)
-inline int calculateError() {
-  volatile long  a;
-  volatile long  i;
+const float conversion_value = ENCODER_STATE_CHANGE_PER_REV / NEMA_MOTOR_PPR;
+inline float calculateError() {
+  volatile float  a;
+  volatile float  i;
 
   cli();
   a = internal_encoder_position;
   i = internal_in_stepCounter;
   sei();
 
-  long int converted_motor_position = (i * conversion_value)>>7; //'>>' is five time faster than '/' or (i * conversion_value)/100
-  long int ret = a - converted_motor_position;
- 
-  #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
-    int converted = ((ENCODER_PPR ) * i) / NEMA_MOTOR_PPR;
-    Serial.print((int)a);Serial.print(" ");
-    Serial.print((int)i);Serial.print(" ");
-    Serial.print(converted);Serial.print(" ");
-    Serial.print(ret);Serial.println();
-  #endif
-    
+  float converted_motor_position = i * conversion_value; 
+  float ret = a - converted_motor_position;
+
+   #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
+     Serial.print(internal_encoder_position);Serial.print(" ");
+     Serial.print(converted_motor_position);Serial.println();
+   #endif
+   
   return ret;
 }
 
@@ -159,21 +156,19 @@ inline int checkErrorDirection() {
   return 0; //OK
 }
 
-#if ENABLE_PRINTS>99
 inline void printDebugInfoToSerialPlotter() {
   static Millis t = Millis(100);
   if (t.check()) {
     t.reset();
     Serial.println(calculateError());
+    calculateError();
   }
 }
-#endif
-
 void loop() {
   while(1) {
-    runMotor();
-    #if ENABLE_PRINTS>99
-      printDebugInfoToSerialPlotter();
-    #endif
+   runMotor();
+   #if ENABLE_PRINTS>99
+     printDebugInfoToSerialPlotter();
+   #endif
   }
 }

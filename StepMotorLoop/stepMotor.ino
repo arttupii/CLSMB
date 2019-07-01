@@ -24,9 +24,9 @@ inline void runMotor() {
     return;
   }
 
-  //long u0 = micros();
-  dir = checkErrorDirection(); //Takes 8-12us
-  //Serial.println(micros()-u0);
+ // long u0 = micros();
+  dir = checkErrorDirection(); //Takes 40us
+ // Serial.println(micros()-u0);
   
   if (dir) {
     motorJamming = true;
@@ -52,5 +52,7 @@ inline void runMotor() {
   SET_MOTOR_STEP_HIGH;
   delayMicroseconds(STEP_1_PULSE_US);
   SET_MOTOR_STEP_LOW;
-  delayMicroseconds(step_0_pulse_wide-10); //checErrorDirection() takes 8-12us --> -10us
+  if(step_0_pulse_wide-40>0) {
+    delayMicroseconds(step_0_pulse_wide-40); //checErrorDirection() takes 40us --> -40us
+  }
 }

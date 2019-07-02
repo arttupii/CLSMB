@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.4.2">
+<eagle version="9.4.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -20011,11 +20011,15 @@ Source: www.kingbright.com</description>
 <junction x="5.08" y="-63.5"/>
 <pinref part="IC1" gate="G$1" pin="CSN"/>
 <wire x1="101.6" y1="-71.12" x2="114.3" y2="-71.12" width="0.1524" layer="91"/>
-<wire x1="114.3" y1="-71.12" x2="114.3" y2="-88.9" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="-71.12" x2="114.3" y2="-73.66" width="0.1524" layer="91"/>
 <junction x="114.3" y="-88.9"/>
+<wire x1="114.3" y1="-73.66" x2="114.3" y2="-88.9" width="0.1524" layer="91"/>
 <wire x1="129.54" y1="-73.66" x2="129.54" y2="-88.9" width="0.1524" layer="91"/>
 <junction x="129.54" y="-88.9"/>
 <pinref part="C5" gate="G$1" pin="-"/>
+<pinref part="IC1" gate="G$1" pin="CLK"/>
+<wire x1="101.6" y1="-73.66" x2="114.3" y2="-73.66" width="0.1524" layer="91"/>
+<junction x="114.3" y="-73.66"/>
 </segment>
 <segment>
 <pinref part="X2" gate="-2" pin="KL"/>

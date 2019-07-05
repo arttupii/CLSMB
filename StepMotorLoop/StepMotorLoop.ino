@@ -28,6 +28,13 @@ void setup() {
   PCMSK0 = 0b00000101; //Pin Change Mask Register. Enable Pin change interrupt for PCINT02 (EN pin) & PCINT00 (STEP_IN)
   PCMSK2 = 0b00110000; //Pin Change Mask Register. Enable Pin change interrupt for PCINT20&PCINT21 (IN_A,IN_B)
 
+
+  // initialize timer2 
+  TCNT2=204;    //200 --> outputs 25khz. PW:20us
+  TCCR2B = 0b00000001; //clkT2S/8 (from prescaler)
+  //Timer2 Overflow Interrupt Enable
+  TIMSK2 = 1<<TOIE2;
+   
   //initialize ports
   PORTC = PINB;
 
@@ -135,7 +142,7 @@ inline float calculateError() {
   return ret;
 }
 
-inline int checkErrorDirection() {
+inline u8 checkErrorDirection() {
   bool errorFound = false;
   const float m = calculateError();
 
@@ -144,7 +151,7 @@ inline int checkErrorDirection() {
   } else if (m >= -STEP_ERROR_MIN && m <= STEP_ERROR_MIN) {
     return 0;
   }
-  
+
   if (errorFound) {
     if (m < 0) {
       return 2;
@@ -152,6 +159,7 @@ inline int checkErrorDirection() {
       return 1;
     }
   }
+  
   return 0; //OK
 }
 

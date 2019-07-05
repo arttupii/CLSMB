@@ -13,50 +13,56 @@
 #define SET_LED_HIGH PORTB|=0b00100000
 #define SET_LED_LOW PORTB&=0b11011111
 
-const long int step_0_pulse_wide = (1000000.0/(NEMA_MOTOR_PPR*STEP_MOTOR_REV_PER_SEC))-STEP_1_PULSE_US - 50.0; //checErrorDirection() takes 50us --> -50us
+const u8 defaultDivider = (1000000.0 / (NEMA_MOTOR_PPR*STEP_MOTOR_REV_PER_SEC))/(2*20);
+
+volatile u8 dir;
+volatile u8 nextStep = 0;
+volatile u8 divider = defaultDivider;
+
+ISR(TIMER2_OVF_vect) {       // timer compare interrupt service routine
+  TCNT2 = 245;  //-->20us
+  if (divider <= 0) {
+    if (dir) {
+      if(nextStep) {
+        if (dir == 1) {
+          SET_MOTOR_DIR_HIGH;
+        } else {
+          SET_MOTOR_DIR_LOW;
+        }
+        SET_MOTOR_STEP_HIGH;
+        nextStep = 0;
+      } else {
+        SET_MOTOR_STEP_LOW;
+        nextStep = 1;
+      }
+    }
+    divider = defaultDivider;
+  }
+  divider--;
+}
 
 static Millis ledOnTimer = Millis(200);
 Micros u;
-u8 i;
-inline void runMotor() {
-  static int dir;
 
+inline void runMotor() {
   if (READ_EN_PIN) {
+    motorJamming=false;
     return;
   }
-
-  if(i>200 || motorJamming&&(i>2)) { //Sceduling...
-    dir = checkErrorDirection();
-    i=0;
-  }
-    i++;
-
-  if (dir) {
-      motorJamming = true;
-      HOLD_ON_REQ;
-      SET_LED_HIGH;
-      ledOnTimer.reset();
-    } else {
-      motorJamming = false;
-      CANCEL_HOLD_ON_REQ;
-      if (ledOnTimer.check()) {
-         SET_LED_LOW;
-      }
-     return;
-  }
+  dir = checkErrorDirection();
   
-  SET_MOTOR_STEP_LOW;
-  if (dir == 1) {
-    SET_MOTOR_DIR_HIGH;
+  if (dir) {
+    motorJamming = true;
+    HOLD_ON_REQ;
+    SET_LED_HIGH;
+    ledOnTimer.reset();
   } else {
-    SET_MOTOR_DIR_LOW;
-  }
-
-  SET_MOTOR_STEP_HIGH;
-  delayMicroseconds(STEP_1_PULSE_US);
-  SET_MOTOR_STEP_LOW;
-
-  if(step_0_pulse_wide>0) {
-    delayMicroseconds(step_0_pulse_wide); 
+    nextStep = 0;
+    motorJamming = false;
+    divider = defaultDivider;
+    CANCEL_HOLD_ON_REQ;
+    if (ledOnTimer.check()) {
+      SET_LED_LOW;
+    }
   }
 }

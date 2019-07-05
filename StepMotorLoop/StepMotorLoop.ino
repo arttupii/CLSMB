@@ -1,7 +1,7 @@
 
 #include <avr/interrupt.h>
-#include <Micros.h>
 #include <Millis.h>
+#include <Micros.h>
 #include "config.h"
 
 void setup() {
@@ -114,6 +114,7 @@ ISR (PCINT2_vect)
 }
 
 const float conversion_value = ENCODER_STATE_CHANGE_PER_REV / NEMA_MOTOR_PPR;
+
 inline float calculateError() {
   volatile float  a;
   volatile float  i;
@@ -135,16 +136,15 @@ inline float calculateError() {
 }
 
 inline int checkErrorDirection() {
-  static bool errorFound = false;
-  int m = calculateError();
+  bool errorFound = false;
+  const float m = calculateError();
 
   if (m < -STEP_ERROR_MAX || m > STEP_ERROR_MAX) {
     errorFound = true;
+  } else if (m >= -STEP_ERROR_MIN && m <= STEP_ERROR_MIN) {
+    return 0;
   }
-
-  if (m >= -STEP_ERROR_MIN && m <= STEP_ERROR_MIN) {
-    errorFound = false;
-  }
+  
   if (errorFound) {
     if (m < 0) {
       return 2;
@@ -152,7 +152,6 @@ inline int checkErrorDirection() {
       return 1;
     }
   }
-  
   return 0; //OK
 }
 
@@ -164,6 +163,7 @@ inline void printDebugInfoToSerialPlotter() {
     calculateError();
   }
 }
+
 void loop() {
   while(1) {
    runMotor();

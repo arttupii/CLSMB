@@ -3,7 +3,7 @@
 
 #define ENCODER_STATE_CHANGE_PER_REV 1024.0 //State change per Revolution (A+B) (AS5040)
 
-#define STEP_MOTOR_REV_PER_SEC 3.0 //revolutions/second. Fixing speed
+#define STEP_MOTOR_REV_PER_SEC 4.0 //revolutions/second. Fixing speed
 
 #define NEMA_MOTOR_FULL_STEPS 200.0
 #define NEMA_MOTOR_MICROSTEPS 16.0

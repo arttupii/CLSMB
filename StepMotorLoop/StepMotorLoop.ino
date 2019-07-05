@@ -1,6 +1,5 @@
 
 #include <avr/interrupt.h>
-#include <Millis.h>
 #include "config.h"
 
 volatile long internal_in_stepCounter = 0;
@@ -72,9 +71,9 @@ void setup() {
 }
 
 inline void printDebugInfoToSerialPlotter() {
-  static Millis t = Millis(100);
-  if (t.check()) {
-    t.reset();
+  static unsigned long t = millis();
+  if ((millis()-t)>100) {
+    t = millis();
     Serial.println(calculateError());
     calculateError();
   }

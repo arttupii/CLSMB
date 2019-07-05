@@ -84,9 +84,6 @@ Demo video:
 https://youtu.be/jLogS5AQ-yQ (AS5040 encoder and A4988 step motor controller)
 https://youtu.be/jxansaLNb5I (Serial Plotter view. #define ENABLE_PRINTS 100)
 
-You need this library (Micros.h&Millis.h):
-https://github.com/arttupii/ArduinoHelperLibrary
-
 Useful links:
 https://www.banggood.com/NANO-IO-Shield-Expansion-Board-Nano-V3-Improved-Version-No-Cable-For-Arduino-p-1010994.html?rmmds=search&cur_warehouse=CN
 https://www.banggood.com/TB6600-Upgraded-Stepper-Motor-Driver-Controller-for-4A-940V-TTL-32-Micro-Step-2-or-4-Phase-of-4257-Stepper-Motor-3D-Printer-CNC-Part-p-1453122.html?rmmds=search&cur_warehouse=CN

@@ -15,7 +15,6 @@
 
 volatile u8 dir;
 volatile u8 nextStep = 0;
-static Millis ledOnTimer = Millis(200);
 
 ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
   TCNT1 = 0;
@@ -35,6 +34,8 @@ ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
   }
 }
 
+unsigned long led_millis = 0;
+
 inline void runMotor() {
   if (READ_EN_PIN) {
     motorJamming = false;
@@ -46,12 +47,12 @@ inline void runMotor() {
     motorJamming = true;
     HOLD_ON_REQ;
     SET_LED_HIGH;
-    ledOnTimer.reset();
+    led_millis = millis();
   } else {
     nextStep = 0;
     motorJamming = false;
     CANCEL_HOLD_ON_REQ;
-    if (ledOnTimer.check()) {
+    if ((millis()-led_millis)>200) {
       SET_LED_LOW;
     }
   }

@@ -11,10 +11,10 @@
 
 //#define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
 
-
+//Select loop back mode
 //https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/
-#define STEP_LOSS_COMPENSATION
-//#define LOAD_POSITION_CONTROL
+#define STEP_LOSS_COMPENSATION_MODE
+//#define LOAD_POSITION_CONTROL_MODE
 
 
 #define ENABLE_PRINTS 1
@@ -22,22 +22,17 @@
 #define STEP_1_PULSE_US 1 //pulse wide
 
 
-#ifdef STEP_LOSS_COMPENSATION
+#ifdef STEP_LOSS_COMPENSATION_MODE
   #define STEP_ERROR_MAX 20 //Start position repairing if position deviation is more than this
   #define STEP_ERROR_MIN 10 //Stop position repairing if position deviation is less than this
   #define STEP_MOTOR_REV_PER_SEC 3.5 //revolutions/second. Fixing speed
 #endif
 
-#ifdef LOAD_POSITION_CONTROL
-  #define STEP_MOTOR_REV_PER_SEC 3.5 //revolutions/second. Fixing speed
+#ifdef LOAD_POSITION_CONTROL_MODE
+  #define STEP_MOTOR_REV_PER_SEC 4.5 //revolutions/second. Fixing speed
   #define STEP_ERROR_MAX 3 //Start position repairing if position deviation is more than this
-  #define STEP_ERROR_MIN 1 //Stop position repairing if position deviation is less than this
+  #define STEP_ERROR_MIN 2 //Stop position repairing if position deviation is less than this
 #endif
-
-
-
-
-
 
 
 #ifdef STEP_LOSS_COMPENSATION

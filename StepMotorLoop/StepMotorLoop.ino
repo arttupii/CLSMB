@@ -45,10 +45,10 @@ void setup() {
   // initialize Timer1
   TCCR1A = 0;    // set entire TCCR1A register to 0
   TCCR1B = 0;    // set entire TCCR1A register to 0
-  
+
   //Enable Compare A Interrupt
   bitSet(TIMSK1, OCIE1A);
-  
+
   long step_pulse_width_us = (1000000.0 / (NEMA_MOTOR_PPR * STEP_MOTOR_REV_PER_SEC)) / 2;
   if (step_pulse_width_us >= 1048560L) { //1048560L = (1/(16MHz/256))*0xffff    (256=prescaler)
     OCR1A = calculateOCR1A(1024, step_pulse_width_us);
@@ -72,16 +72,19 @@ void setup() {
 
 inline void printDebugInfoToSerialPlotter() {
   static unsigned long t = millis();
-  if ((millis()-t)>100) {
+  if ((millis() - t) > 100) {
     t = millis();
-    Serial.println(calculateError());
-    calculateError();
+#ifdef LOAD_POSITION_CONTROL_MODE
+    Serial.println(calculateErrorLoadPositionMode());
+#else
+    Serial.println(calculateErrorStepLossCompensationMode());
+#endif
   }
 }
 
 void loop() {
-    runMotor();
+  runMotor();
 #if ENABLE_PRINTS>99
-    printDebugInfoToSerialPlotter();
+  printDebugInfoToSerialPlotter();
 #endif
 }

@@ -38,7 +38,7 @@ Closed loop step motor controller
                         |               |
                         +---------------+                   
 
-Block diagram
+Block diagram (STEP_LOSS_COMPENSATION-mode)
                    +----------------------------------+  
                    |   +----------+                   |  
  Input(Step,En,Dir)|   | Input    |                   |                                             
@@ -62,7 +62,36 @@ Block diagram
                    |   +----------+      +----------------+                                        |     
                    |                                                                               |  
                    +-------------------------------------------------------------------------------+
-                   
+
+
+Block diagram (LOAD_POSITION_CONTROL-mode)
+                                                         
+                       +----------+                      
+ Input(Step,En,Dir)    | Input    |                                                                 
+ --------------------->| counter  |                                                                      
+                       |          |                                  +--------------+       +--------------+
+                   +---|          |                                  |              |       | Step Motor   |
+                   |   +----------+                                  | Step         |       |              |
+                   |                                                 | Motor        |------>|              |
+                   |   +----------+   +----------+    +------------->| Driver       |       |              |
+                   +-->|Deviation |   |          |    |              | (e.g TB6600) |       |              |
+                       |counter   |-->| >n steps |    |              |              |       |              |
+                   +-->|          |   |          |    |              +--------------+       +--------------+
+                   |   +----------+   +---------+     |                                     | Rotary       |
+                   |                        |         |                                     | encorer      |
+                   |                        V         |                                     |              |
+                   |   +----------+      +----------------+                                 |              |
+                   +---|Rotation  |      |                |                                 +--------------+
+                       |position  |      | Fix position   |                                        |
+                       |counter   |      | (Generate      |                                        |     
+                   +-->|          |      |step,dir pulses)|                                        |     
+                   |   +----------+      +----------------+                                        |     
+                   |                                                                               |  
+                   +-------------------------------------------------------------------------------+
+
+
+The modes explained: https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/
+                                    
 Hox!
  - Because of speed optimizations you cannot change pinout without code changes. 
  - FEED HOLD is open collector output. With this pin you can ask "feed hold" from CNC machine controller

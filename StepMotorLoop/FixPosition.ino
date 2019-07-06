@@ -37,13 +37,9 @@ ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
 unsigned long led_millis = 0;
 
 inline void runMotor() {
-  if (READ_EN_PIN) {
-    motorJamming = false;
-    return;
-  }
-  dir = checkErrorDirection();
-
-  if (dir) {
+  u8 dir_e = checkErrorDirection();
+  
+  if (dir_e) {
     motorJamming = true;
     HOLD_ON_REQ;
     SET_LED_HIGH;
@@ -55,5 +51,10 @@ inline void runMotor() {
     if ((millis()-led_millis)>200) {
       SET_LED_LOW;
     }
+  }
+  if (!READ_EN_PIN) {
+     dir = dir_e;
+  } else {
+    dir = 0;
   }
 }

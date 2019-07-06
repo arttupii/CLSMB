@@ -13,9 +13,52 @@
 #define SET_LED_HIGH PORTB|=0b00100000
 #define SET_LED_LOW PORTB&=0b11011111
 
+#ifdef LOAD_POSITION_CONTROL_MODE
+
+volatile u8 nextStep = 0;
+volatile u8 dir;
+volatile long stepErr;
+ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
+  TCNT1 = 0;
+
+  //DeviationCounter start
+  stepErr = internal_encoder_position-internal_in_stepCounter;
+  if (stepErr < -STEP_ERROR_MAX){
+    dir = 2;
+  } else if(stepErr > STEP_ERROR_MAX) {
+    dir = 1;
+  } else if (stepErr >= -STEP_ERROR_MIN && stepErr<= STEP_ERROR_MIN) {
+    dir=0;
+  } 
+  //DeviationCounter end 
+
+  //FixPosition start
+  if (dir) {
+    if (nextStep) {
+      if (dir == 1) {
+        SET_MOTOR_DIR_HIGH;
+      } else {
+        SET_MOTOR_DIR_LOW;
+      }
+      SET_MOTOR_STEP_HIGH;
+      nextStep = 0;
+    } else {
+      SET_MOTOR_STEP_LOW;
+      nextStep = 1;
+    }
+  }
+  //FixPosition end
+}
+
+inline void runMotor() {
+  //Dummy function...
+}
+#endif
+
+
+#ifdef STEP_LOSS_COMPENSATION_MODE
 volatile u8 dir;
 volatile u8 nextStep = 0;
-
 ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
   TCNT1 = 0;
   if (dir) {
@@ -58,3 +101,4 @@ inline void runMotor() {
     dir = 0;
   }
 }
+#endif

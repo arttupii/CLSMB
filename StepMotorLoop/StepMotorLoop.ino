@@ -74,9 +74,7 @@ inline void printDebugInfoToSerialPlotter() {
   static unsigned long t = millis();
   if ((millis() - t) > 100) {
     t = millis();
-#ifdef LOAD_POSITION_CONTROL_MODE
-    Serial.println(calculateErrorLoadPositionMode());
-#else
+#ifdef STEP_LOSS_COMPENSATION_MODE
     Serial.println(calculateErrorStepLossCompensationMode());
 #endif
   }

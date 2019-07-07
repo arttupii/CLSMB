@@ -14,7 +14,7 @@
 //Select loop back mode
 //https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/
 #define STEP_LOSS_COMPENSATION_MODE
-//#define LOAD_POSITION_CONTROL_MODE //Hox! This mode doesn't work yeat
+//#define LOAD_POSITION_CONTROL_MODE
 
 
 #define ENABLE_PRINTS 1
@@ -29,8 +29,8 @@
 #endif
 
 #ifdef LOAD_POSITION_CONTROL_MODE
-  #define STEP_MOTOR_REV_PER_SEC 3.0 //revolutions/second. Fixing speed
-  #define STEP_ERROR_MAX 3 //Start position repairing if position deviation is more than this
+  #define STEP_MOTOR_REV_PER_SEC 4.0 //revolutions/second. Fixing speed
+  #define STEP_ERROR_MAX 10 //Start position repairing if position deviation is more than this
   #define STEP_ERROR_MIN 2 //Stop position repairing if position deviation is less than this
 #endif
 

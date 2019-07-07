@@ -14,7 +14,7 @@
 //Select loop back mode
 //https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/
 #define STEP_LOSS_COMPENSATION_MODE
-//#define LOAD_POSITION_CONTROL_MODE
+//#define LOAD_POSITION_CONTROL_MODE //Hox! This mode doesn't work yeat
 
 
 #define ENABLE_PRINTS 1

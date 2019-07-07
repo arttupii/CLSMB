@@ -16,24 +16,24 @@
 #ifdef LOAD_POSITION_CONTROL_MODE
 
 volatile u8 nextStep = 0;
-volatile u8 dir;
+volatile char dir;
 volatile long stepErr;
 ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
   TCNT1 = 0;
 
   //DeviationCounter start
-  stepErr = internal_encoder_position-internal_in_stepCounter;
-  if (stepErr < -STEP_ERROR_MAX){
-    dir = 2;
-  } else if(stepErr > STEP_ERROR_MAX) {
-    dir = 1;
-  } else if (stepErr >= -STEP_ERROR_MIN && stepErr<= STEP_ERROR_MIN) {
-    dir=0;
+ 
+  if (internal_encoder_position<internal_in_stepCounter){
+    dir = -1;
   } 
+  if(internal_encoder_position>internal_in_stepCounter) {
+    dir = 1;
+  } 
+  
   //DeviationCounter end 
 
   //FixPosition start
-  if (dir) {
+  if (dir!=0) {
     if (nextStep) {
       if (dir == 1) {
         SET_MOTOR_DIR_HIGH;
@@ -52,6 +52,10 @@ ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
 
 inline void runMotor() {
   //Dummy function...
+  Serial.print(internal_encoder_position);Serial.print(" ");
+  Serial.println(internal_in_stepCounter);
+  delay(100);
+
 }
 #endif
 

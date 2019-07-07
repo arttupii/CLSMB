@@ -29,7 +29,7 @@
 #endif
 
 #ifdef LOAD_POSITION_CONTROL_MODE
-  #define STEP_MOTOR_REV_PER_SEC 4.5 //revolutions/second. Fixing speed
+  #define STEP_MOTOR_REV_PER_SEC 3.0 //revolutions/second. Fixing speed
   #define STEP_ERROR_MAX 3 //Start position repairing if position deviation is more than this
   #define STEP_ERROR_MIN 2 //Stop position repairing if position deviation is less than this
 #endif

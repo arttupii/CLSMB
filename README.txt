@@ -99,6 +99,8 @@ Hox!
  - FEED HOLD is open collector output. With this pin you can ask "feed hold" from CNC machine controller
         steps loss --> FEED HOLD is LOW.
         normally ---> FEED HOLD is open
+ - LOAD_POSITION_CONTROL mode needs something. "Direct control" causes too much vibrations. 
+
 
  Compatible with:
      * Arduino nano and Arduino Pro Mini 

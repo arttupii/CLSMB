@@ -21,7 +21,6 @@ volatile long stepErr;
 volatile long lastOkPosition = 0;
 ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
   TCNT1 = 0;
-
   //DeviationCounter start
 
   if (internal_encoder_position < internal_in_stepCounter) {
@@ -45,7 +44,7 @@ ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
   //DeviationCounter end
 
   //FixPosition start
-  if (dir != 0) {
+  if (dir!=0) {
     if (nextStep) {
       if (dir == 1) {
         SET_MOTOR_DIR_HIGH;
@@ -64,8 +63,9 @@ ISR(TIMER1_COMPA_vect) {       // timer compare interrupt service routine
 
 inline void runMotor() {
   //Dummy function...
-  //Serial.print(internal_encoder_position-internal_in_stepCounter); Serial.print(" ");
-  Serial.print((int)dir); Serial.print("\n");
+  Serial.print((int)internal_in_stepCounter); Serial.print(" ");
+  Serial.print((int)internal_encoder_position); Serial.print("\n");
+  
   if (stepErr < -50 || stepErr > 50)
   {
     SET_LED_HIGH;

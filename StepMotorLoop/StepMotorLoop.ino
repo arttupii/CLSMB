@@ -35,17 +35,27 @@ void setup() {
   //See https://sites.google.com/site/qeewiki/books/avr-guide/external-interrupts-on-the-atmega328
 
 
-  //enable interupts for quadrature signals + EN&STEP
-  PCICR = 0b00000101; //Enable PCIE0 PCIE2
+  //enable interupts for EN&STEP
+  PCICR = 0b00000001; //Enable PCIE0 
 
   PCMSK0 = 0b00000101; //Pin Change Mask Register. Enable Pin change interrupt for PCINT02 (EN pin) & PCINT00 (STEP_IN)
-  PCMSK2 = 0b00110000; //Pin Change Mask Register. Enable Pin change interrupt for PCINT20&PCINT21 (IN_A,IN_B)
-
-
+ 
   // initialize Timer1
   TCCR1A = 0;    // set entire TCCR1A register to 0
   TCCR1B = 0;    // set entire TCCR1A register to 0
 
+  #ifdef X1_ENCODING
+  EIMSK = 0b01;//External Interrupt Flag Register. Enable Interrupt for A/B signals
+  EICRA = 0b0011;//External Interrupt Control Register A
+  #endif
+  #ifdef X2_ENCODING
+  EIMSK = 0b01;//External Interrupt Flag Register. Enable Interrupt for A/B signals
+  EICRA = 0b0001;//External Interrupt Control Register A
+  #endif
+  #ifdef X4_ENCODING
+  EIMSK = 0b11;//External Interrupt Flag Register. Enable Interrupt for A/B signals
+  EICRA = 0b0101;//External Interrupt Control Register A
+  #endif 
   //Enable Compare A Interrupt
   bitSet(TIMSK1, OCIE1A);
 

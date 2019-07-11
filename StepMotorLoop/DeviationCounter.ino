@@ -1,4 +1,4 @@
-const float conversion_value = ENCODER_STATE_CHANGE_PER_REV / NEMA_MOTOR_PPR;
+const float conversion_value = ENCODER_RESOLUTION / NEMA_MOTOR_PPR;
 
 #ifdef STEP_LOSS_COMPENSATION_MODE
 inline float calculateErrorStepLossCompensationMode() {

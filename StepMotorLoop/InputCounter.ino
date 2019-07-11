@@ -9,7 +9,6 @@ ISR (PCINT0_vect)
   volatile u8 enIn =   pinb & 0b00000100;
 
   if (!motorJamming && enIn==0 ) {
-   // PORTC = pinb; //Forward StepIn,DirIn,EnIn to stepmotor controlle
    #ifdef LOAD_POSITION_CONTROL
       if(enIn) {
         PORTC|=0b00000100;
@@ -17,7 +16,7 @@ ISR (PCINT0_vect)
         PORTC&=0b11111011;
       }
    #else
-      PORTC = pinb;
+       PORTC = pinb;
    #endif
   }
 

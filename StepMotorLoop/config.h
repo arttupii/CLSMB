@@ -1,15 +1,16 @@
 #ifndef __CONFIG__H_
 #define __CONFIG__H_
 
-#define ENCODER_STATE_CHANGE_PER_REV 1024.0 //State change per Revolution (A+B) (AS5040)
+//#define ENCODER_STATE_CHANGE_PER_REV 1024.0 //State change per Revolution (A+B) (AS5040)
+#define ENCODER_STATE_CHANGE_PER_REV 1600.0 //State change per Revolution (A+B) (HN3806-AB-400N)
 
 
 #define NEMA_MOTOR_FULL_STEPS 200.0
-#define NEMA_MOTOR_MICROSTEPS 16.0
+#define NEMA_MOTOR_MICROSTEPS 16
 #define NEMA_MOTOR_PPR (NEMA_MOTOR_FULL_STEPS * NEMA_MOTOR_MICROSTEPS)
 
 
-//#define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
+#define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
 
 //Select loop back mode
 //https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/

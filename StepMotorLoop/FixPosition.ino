@@ -101,7 +101,6 @@ unsigned long led_millis = 0;
 
 inline void runMotor() {
   u8 dir_e = checkErrorDirection();
-
   if (dir_e) {
     motorJamming = true;
     HOLD_ON_REQ;

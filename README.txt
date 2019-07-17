@@ -100,6 +100,7 @@ Hox!
         steps loss --> FEED HOLD is LOW.
         normally ---> FEED HOLD is open
  - LOAD_POSITION_CONTROL mode needs something. "Direct control" causes too much vibrations. 
+ - STEP_LOSS_COMPENSATION mode works
 
 
  Compatible with:

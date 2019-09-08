@@ -1,6 +1,5 @@
 const float conversion_value = ENCODER_RESOLUTION / NEMA_MOTOR_PPR;
 
-#ifdef STEP_LOSS_COMPENSATION_MODE
 inline float calculateErrorStepLossCompensationMode() {
   volatile float  a;
   volatile float  i;
@@ -16,7 +15,6 @@ inline float calculateErrorStepLossCompensationMode() {
   Serial.print(internal_encoder_position); Serial.print(" ");
   Serial.print(converted_motor_position); Serial.println();
 #endif
-
   return ret;
 }
 
@@ -41,4 +39,3 @@ inline u8 checkErrorDirection() {
 
   return 0; //OK
 }
-#endif

@@ -1,9 +1,9 @@
 #ifdef X4_ENCODING
 volatile const u8 x4_phase_array[] = {
-  0b00001100,
-  0b00000100,
-  0b00000000,
-  0b00001000,
+  0b11,
+  0b01,
+  0b00,
+  0b10,
 };
 volatile u8 x4_phase_index = 0;
 #endif
@@ -20,24 +20,22 @@ volatile u8 x4_phase_index = 0;
 #endif
 
 
-volatile u8 prevValue;
-//Handle quadrature signals
-ISR (INT0_vect) //A-Signal
+ICACHE_RAM_ATTR void handleInterruptSignalA()
 { //76543210
-  volatile u8 pind = PIND & 0b00001100;
+  volatile u8 pind = digitalRead(PIN_IN_B)<<2 || digitalRead(PIN_IN_A);
 
 #ifdef X1_ENCODING
-  if (pind & 0b00001000) {
+  if (pind & 0b000010) {
     INCREASE_COUNTER;
   } else {
     DECREASE_COUNTER
   }
 #endif
 #ifdef X2_ENCODING
-  if (pind == 0b1000 || pind == 0b0100) {
+  if (pind == 0b10 || pind == 0b01) {
     DECREASE_COUNTER
   }
-  if (pind == 0b1100 || pind == 0b0000) {
+  if (pind == 0b11 || pind == 0b00) {
     INCREASE_COUNTER;
   }
 #endif
@@ -59,9 +57,9 @@ ISR (INT0_vect) //A-Signal
 
 
 #ifdef X4_ENCODING
-ISR (INT1_vect)
+ICACHE_RAM_ATTR void handleInterruptSignalB()
 {
-  volatile u8 pind = PIND & 0b00001100;
+  volatile u8 pind = digitalRead(PIN_IN_B)<<2 || digitalRead(PIN_IN_A);;
 
   if (x4_phase_array[(x4_phase_index + 1) & 0b11] == pind) {
     INCREASE_COUNTER

@@ -2,26 +2,45 @@ Closed loop step motor controller
 
 Two modes are supported. Step loss compensation and load position control mode.
 You can select mode from config.h file.
-     
+
+Pin       Function                     ESP-8266 Pin  
+TX        TXD                          TXD
+RX        RXD                          RXD
+A0        Analog input, max 3.3V input A0
+D0        IO                           GPIO16    PIN_STEP_OUT
+D1*       IO, SCL                      GPIO5     PIN_IN_A
+D2*       IO, SDA                      GPIO4     PIN_IN_B
+D3        IO, 10k Pull-up              GPIO0     PIN_EN_OUT
+D4        IO, 10k Pull-up,BUILTIN_LED  GPIO2     PIN_LED
+D5*       IO, SCK                      GPIO14    PIN_STEP_IN
+D6*       IO, MISO                     GPIO12    PIN_DIR_IN
+D7*       IO, MOSI                     GPIO13    PIN_EN_IN
+D8        IO, 10k Pull-down, SS	       GPIO15    PIN_DIR_OUT
+G         Ground                       GND
+5V        5V                          -
+3V3       3.3V                         3.3V
+RST       Reset                        RST
+
+
     Architecture of closed loop step motor controller:
 
                                              +---------+--------+
                         +---------------+    | Rotary  |  Step  |
-                        |               |    | encoder |  Motor |
+                        | ESP2866       |    | encoder |  Motor |
                         |               |    |         |        |
                         |               |    |         |        |
-           stepIn------>|D8             |    |         |        |
-                        |   Arduino     |    |         |        |
-           dirIn------->|D9 Nano        |    |  A   B  |        |
+           stepIn------>|GPIO14         |    |         |        |
+                        |               |    |         |        |
+           dirIn------->|GPIO12         |    |  A   B  |        |
                         |               |    +---------+--------+
-           EnIn-------->|D10            |       |   |     ^^^^
+           EnIn-------->|GPIO13         |       |   |     ^^^^
                         |               |IN_A   |   |     ||||
-           LED---------<|D13          D2|<------+   |     ||||
+           LED---------<|GPIO2     GPIO5|<------+   |     ||||
                         |               |           |     ||||
-        _________       |               |IN_B       |     ||||
-        FEED HOLD------<|D7           D3|<----------+     ||||
-                        |               |                 ||||
-                        |  A2  A1  A0   |                 ||||
+                        |          GPIO4|IN_B       |     ||||
+                        |               |<----------+     ||||
+                        |GPIO GPIO GPIO |                 ||||
+                        | 0    15   16  |                 ||||
                         +---------------+                 ||||
                            |   |   |                      ||||
                            |   |   |                      ||||
@@ -66,45 +85,12 @@ Block diagram (STEP_LOSS_COMPENSATION-mode)
                    +-------------------------------------------------------------------------------+
 
 
-Block diagram (LOAD_POSITION_CONTROL-mode)
-                                                         
-                       +----------+                      
- Input(Step,En,Dir)    | Input    |                                                                 
- --------------------->| counter  |                                                                      
-                       |          |                                  +--------------+       +--------------+
-                   +---|          |                                  |              |       | Step Motor   |
-                   |   +----------+                                  | Step         |       |              |
-                   |                                                 | Motor        |------>|              |
-                   |   +----------+   +----------+    +------------->| Driver       |       |              |
-                   +-->|Deviation |   |          |    |              | (e.g TB6600) |       |              |
-                       |counter   |-->| >n steps |    |              |              |       |              |
-                   +-->|          |   |          |    |              +--------------+       +--------------+
-                   |   +----------+   +---------+     |                                     | Rotary       |
-                   |                        |         |                                     | encorer      |
-                   |                        V         |                                     |              |
-                   |   +----------+      +----------------+                                 |              |
-                   +---|Rotation  |      |                |                                 +--------------+
-                       |position  |      | Fix position   |                                        |
-                       |counter   |      | (Generate      |                                        |     
-                   +-->|          |      |step,dir pulses)|                                        |     
-                   |   +----------+      +----------------+                                        |     
-                   |                                                                               |  
-                   +-------------------------------------------------------------------------------+
-
 
 The modes explained: https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/
                                     
-Hox!
- - Because of speed optimizations you cannot change pinout without code changes. 
- - FEED HOLD is open collector output. With this pin you can ask "feed hold" from CNC machine controller
-        steps loss --> FEED HOLD is LOW.
-        normally ---> FEED HOLD is open
- - LOAD_POSITION_CONTROL mode needs something. "Direct control" causes too much vibrations. 
- - STEP_LOSS_COMPENSATION mode works
-
 
  Compatible with:
-     * Arduino nano and Arduino Pro Mini 
+     * ESP2866 
      * a standard step motor controller (e.g. a4988 and TB6600)
      * a standard rotary incremental encoder (e.g HN3806-AB-400N, AS5040 or similar)
                +---+   +---+   +---+   +---+

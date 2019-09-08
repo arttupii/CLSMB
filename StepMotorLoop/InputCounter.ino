@@ -1,23 +1,16 @@
 volatile u8 lastStepInState = 0;
 
 //Handle EN_PIN & STEP_IN change interrupt
-ISR (PCINT0_vect)
+ICACHE_RAM_ATTR void handleInterruptStepIn()
 {
-  volatile u8 pinb = PINB;
-  volatile u8 stepIn = pinb & 0b00000001; //much faster than digitalRead()
-  volatile u8 dirIn =  pinb & 0b00000010;
-  volatile u8 enIn =   pinb & 0b00000100;
+  volatile u8 stepIn = digitalRead(PIN_STEP_IN);
+  volatile u8 dirIn =  digitalRead(PIN_DIR_IN);
+  volatile u8 enIn =   digitalRead(PIN_EN_IN);
 
   if (!motorJamming && enIn==0 ) {
-   #ifdef LOAD_POSITION_CONTROL
-      if(enIn) {
-        PORTC|=0b00000100;
-      } else {
-        PORTC&=0b11111011;
-      }
-   #else
-       PORTC = pinb;
-   #endif
+     digitalWrite(PIN_EN_OUT, enIn);
+     digitalWrite(PIN_DIR_OUT, dirIn);  
+     digitalWrite(PIN_STEP_OUT, stepIn);
   }
 
   if (stepIn && lastStepInState == 0 && enIn==0 ) { //Rising edge, EN === enabled
@@ -28,5 +21,4 @@ ISR (PCINT0_vect)
     }
   }
   lastStepInState = stepIn;
-  Serial.println("S");
 }

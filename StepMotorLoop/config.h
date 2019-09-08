@@ -1,6 +1,18 @@
 #ifndef __CONFIG__H_
 #define __CONFIG__H_
 
+
+#define PIN_STEP_OUT 16 
+#define PIN_IN_A     5
+#define PIN_IN_B     4
+#define PIN_EN_OUT   0
+#define PIN_LED      2
+#define PIN_STEP_IN  14
+#define PIN_DIR_IN   12
+#define PIN_EN_IN    13
+#define PIN_DIR_OUT  15
+
+
 #define ENCODER_PULSES_PER_REV 256.0 //State change per Revolution (A+B) (AS5040)
 //#define ENCODER_PULSES_PER_REV 400.0 //State change per Revolution (A+B) (HN3806-AB-400N)
 
@@ -15,10 +27,8 @@
 //Select loop back mode
 //https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/
 #define STEP_LOSS_COMPENSATION_MODE
-//#define LOAD_POSITION_CONTROL_MODE
 
-
-#define ENABLE_PRINTS 1
+#define ENABLE_PRINTS 99
 
 #define STEP_1_PULSE_US 1 //pulse wide
 

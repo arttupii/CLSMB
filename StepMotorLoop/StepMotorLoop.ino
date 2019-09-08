@@ -9,6 +9,12 @@ volatile long internal_encoder_position = 0;
 volatile bool motorJamming = false;
 
 void ICACHE_RAM_ATTR onTimerISR();
+void ICACHE_RAM_ATTR handleInterruptStepIn();
+void ICACHE_RAM_ATTRhandleInterruptEnIn();
+void ICACHE_RAM_ATTR handleInterruptSignalA();
+void ICACHE_RAM_ATTR handleInterruptSignalB();
+void ICACHE_RAM_ATTR handleInterruptEnIn();
+ 
 
 void setup() {
 #if ENABLE_PRINTS>0
@@ -31,17 +37,17 @@ void setup() {
   
 
  attachInterrupt(digitalPinToInterrupt(PIN_STEP_IN), handleInterruptStepIn, RISING);
- attachInterrupt(digitalPinToInterrupt(PIN_EN_IN), handleInterruptStepIn, CHANGE);
+ attachInterrupt(digitalPinToInterrupt(PIN_EN_IN), handleInterruptEnIn, CHANGE);
 
   #ifdef X1_ENCODING
-  //attachInterrupt(digitalPinToInterrupt(PIN_IN_A), handleInterruptSignalA, RISING);
+  attachInterrupt(digitalPinToInterrupt(PIN_IN_A), handleInterruptSignalA, RISING);
   #endif
   #ifdef X2_ENCODING
   attachInterrupt(digitalPinToInterrupt(PIN_IN_A), handleInterruptSignalA, CHANGE);
   #endif
   #ifdef X4_ENCODING
-  attachInterrupt(digitalPinToInterrupt(PIN_IN_A), handleInterruptSignalA, RISING);
-  attachInterrupt(digitalPinToInterrupt(PIN_IN_B), handleInterruptSignalB, RISING);
+  attachInterrupt(digitalPinToInterrupt(PIN_IN_A), handleInterruptSignalA, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(PIN_IN_B), handleInterruptSignalA, CHANGE);
   #endif 
 
   long step_pulse_width_us = ((1000000.0 / (NEMA_MOTOR_PPR * STEP_MOTOR_REV_PER_SEC)) / 2)  * 160;
@@ -49,15 +55,18 @@ void setup() {
   timer1_enable(TIM_DIV1, TIM_EDGE, TIM_LOOP);
   timer1_write(step_pulse_width_us); //120000 us
   sei();//Enable interrupts
+
+  digitalWrite(PIN_EN_OUT, digitalRead(PIN_EN_IN));
+
+    
+
 }
 
 inline void printDebugInfoToSerialPlotter() {
   static unsigned long t = millis();
   if ((millis() - t) > 100) {
     t = millis();
-#ifdef STEP_LOSS_COMPENSATION_MODE
     Serial.println(calculateErrorStepLossCompensationMode());
-#endif
   }
 }
 

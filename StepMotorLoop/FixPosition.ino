@@ -12,11 +12,11 @@
 #define SET_LED_LOW  digitalWrite(PIN_LED,LOW)
 
 
-volatile u8 dir;
+volatile u8 dir=0;
 volatile u8 nextStep = 0;
 
 void ICACHE_RAM_ATTR onTimerISR(){       // timer compare interrupt service routine
-  if (dir || true) {
+  if (dir) {
     if (nextStep) {
       if (dir == 1) {
         SET_MOTOR_DIR_HIGH;
@@ -41,11 +41,9 @@ inline void runMotor() {
     SET_LED_HIGH;
     led_millis = millis();
   } else {
-  //  nextStep = 0;
+    nextStep = 0;
     motorJamming = false;
-    if ((millis() - led_millis) > 200) {
-      SET_LED_LOW;
-    }
+    SET_LED_LOW;
   }
   if (!READ_EN_PIN) {
     dir = dir_e;

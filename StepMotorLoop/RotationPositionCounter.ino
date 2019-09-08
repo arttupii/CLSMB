@@ -20,12 +20,11 @@ volatile u8 x4_phase_index = 0;
 #endif
 
 
-ICACHE_RAM_ATTR void handleInterruptSignalA()
+void ICACHE_RAM_ATTR handleInterruptSignalA()
 { //76543210
-  volatile u8 pind = digitalRead(PIN_IN_B)<<2 || digitalRead(PIN_IN_A);
-
+  volatile u8 pind = (digitalRead(PIN_IN_B)?2:0) + (digitalRead(PIN_IN_A)?1:0);
 #ifdef X1_ENCODING
-  if (pind & 0b000010) {
+  if (pind & 0b10) {
     INCREASE_COUNTER;
   } else {
     DECREASE_COUNTER
@@ -51,26 +50,5 @@ ICACHE_RAM_ATTR void handleInterruptSignalA()
    // Serial.print("Lost phase synchronization!!! ");
 #endif
   }
-
 #endif
 }
-
-
-#ifdef X4_ENCODING
-ICACHE_RAM_ATTR void handleInterruptSignalB()
-{
-  volatile u8 pind = digitalRead(PIN_IN_B)<<2 || digitalRead(PIN_IN_A);;
-
-  if (x4_phase_array[(x4_phase_index + 1) & 0b11] == pind) {
-    INCREASE_COUNTER
-    x4_phase_index = (x4_phase_index + 1) & 0b11;
-  } else if (x4_phase_array[(x4_phase_index - 1) & 0b11] == pind) {
-    DECREASE_COUNTER
-    x4_phase_index = (x4_phase_index - 1) & 0b11;
-  } else {
-#if ENABLE_PRINTS>0
-   // Serial.print("Lost phase synchronization!!! ");
-#endif
-  }
-}
-#endif

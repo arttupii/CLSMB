@@ -13,6 +13,7 @@ inline float calculateErrorStepLossCompensationMode() {
 
 #if ENABLE_PRINTS>50 and ENABLE_PRINTS<99
   Serial.print(internal_encoder_position); Serial.print(" ");
+  Serial.print(internal_in_stepCounter); Serial.print(" ");
   Serial.print(converted_motor_position); Serial.println();
 #endif
   return ret;

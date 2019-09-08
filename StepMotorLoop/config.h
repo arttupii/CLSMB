@@ -1,8 +1,8 @@
 #ifndef __CONFIG__H_
 #define __CONFIG__H_
 
-//#define ENCODER_PULSES_PER_REV 256.0 //State change per Revolution (A+B) (AS5040)
-#define ENCODER_PULSES_PER_REV 400.0 //State change per Revolution (A+B) (HN3806-AB-400N)
+#define ENCODER_PULSES_PER_REV 256.0 //State change per Revolution (A+B) (AS5040)
+//#define ENCODER_PULSES_PER_REV 400.0 //State change per Revolution (A+B) (HN3806-AB-400N)
 
 
 #define NEMA_MOTOR_FULL_STEPS 200.0
@@ -10,7 +10,7 @@
 #define NEMA_MOTOR_PPR (NEMA_MOTOR_FULL_STEPS * NEMA_MOTOR_MICROSTEPS)
 
 
-//#define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
+#define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
 
 //Select loop back mode
 //https://www.linearmotiontips.com/how-does-closed-loop-stepper-control-work/
@@ -24,9 +24,9 @@
 
 
 #ifdef STEP_LOSS_COMPENSATION_MODE
-  #define STEP_ERROR_MAX 20 //Start position repairing if position deviation is more than this
+  #define STEP_ERROR_MAX 200 //Start position repairing if position deviation is more than this
   #define STEP_ERROR_MIN 10 //Stop position repairing if position deviation is less than this
-  #define STEP_MOTOR_REV_PER_SEC 3.5 //revolutions/second. Fixing speed
+  #define STEP_MOTOR_REV_PER_SEC 2.0 //revolutions/second. Fixing speed
 #endif
 
 #ifdef LOAD_POSITION_CONTROL_MODE

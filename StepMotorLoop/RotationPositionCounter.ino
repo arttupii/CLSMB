@@ -50,7 +50,7 @@ ISR (INT0_vect) //A-Signal
     x4_phase_index = (x4_phase_index - 1) & 0b11;
   } else {
 #if ENABLE_PRINTS>0
-    Serial.print("Lost phase synchronization!!! ");
+   // Serial.print("Lost phase synchronization!!! ");
 #endif
   }
 
@@ -71,7 +71,7 @@ ISR (INT1_vect)
     x4_phase_index = (x4_phase_index - 1) & 0b11;
   } else {
 #if ENABLE_PRINTS>0
-    Serial.print("Lost phase synchronization!!! ");
+   // Serial.print("Lost phase synchronization!!! ");
 #endif
   }
 }

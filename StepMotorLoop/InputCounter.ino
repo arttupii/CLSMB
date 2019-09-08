@@ -28,4 +28,5 @@ ISR (PCINT0_vect)
     }
   }
   lastStepInState = stepIn;
+  Serial.println("S");
 }

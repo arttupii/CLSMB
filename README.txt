@@ -1,8 +1,5 @@
 Closed loop step motor controller
 
-Two modes are supported. Step loss compensation and load position control mode.
-You can select mode from config.h file.
-
 Pin       Function                     ESP-8266 Pin             
 TX        TXD                          TXD                     
 RX        RXD                          RXD                      

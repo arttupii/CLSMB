@@ -24,7 +24,7 @@
 
 #define FLIP_ENCODER //enable if rotor position repairing is done wrong direction
 
-#define ENABLE_PRINTS 110
+#define ENABLE_PRINTS 1
 
 
   #define STEP_ERROR_MAX 40 //Start position repairing if position deviation is more than this

@@ -1,7 +1,9 @@
-
 #include <ESP8266WiFi.h>
-#include <Ticker.h>
+#include <ESP8266mDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 
+#include "/home/arttu/git/myEspNowMeshConfig.h"
 #include "config.h"
 
 volatile long internal_in_stepCounter = 0;
@@ -57,18 +59,9 @@ void setup() {
   sei();//Enable interrupts
 
   digitalWrite(PIN_EN_OUT, digitalRead(PIN_EN_IN));
-
-    
-
 }
 
-inline void printDebugInfoToSerialPlotter() {
-  static unsigned long t = millis();
-  if ((millis() - t) > 100) {
-    t = millis();
-    Serial.println(calculateErrorStepLossCompensationMode());
-  }
-}
+
 
 void loop() {
   runMotor();

@@ -101,6 +101,9 @@ Hox!
         normally ---> FEED HOLD is open
  - LOAD_POSITION_CONTROL mode needs something. "Direct control" causes too much vibrations. 
  - STEP_LOSS_COMPENSATION mode works
+ 
+List of Known Bugs:
+ - You should swap D3 and D8 pins on Arduino nano (this needs also some code changes). StepIn needs RISING interrupt. CHANGE interrupt causes too many interrupts for arduino nano and it cannot handle all of them. This issue has been fixed in ESP2866 branch.
 
 
  Compatible with:

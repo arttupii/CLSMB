@@ -3,7 +3,6 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
-#include "/home/arttu/git/myEspNowMeshConfig.h"
 #include "config.h"
 
 volatile long internal_in_stepCounter = 0;
